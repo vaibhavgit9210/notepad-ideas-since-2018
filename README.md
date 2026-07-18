@@ -43,6 +43,14 @@ Cryptographically random, runs entirely in your browser.
 A working digital Enigma machine — type and watch the rotors turn. Plus the
 history, how it was broken, and the algorithm explained.
 
+### 4. `tracka-packet` — Where Packets Actually Go
+
+Real traceroutes from my machine visualised over the real geometry of the world's
+submarine cable network — hop by hop, cable by cable, with a speed-of-light sanity
+check that catches IP geolocation lying. Lives in its own repo:
+[tracka-packet](https://github.com/vaibhavgit9210/tracka-packet) ·
+[live](https://vaibhavgit9210.github.io/tracka-packet/)
+
 ---
 
 *More ideas from the notepad to come.*
