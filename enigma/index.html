@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Die Enigma — an interactive cipher machine</title>
+<style>
+  :root{
+    --bg:#0c0d10;
+    --panel:#17181d;
+    --panel2:#1d1f26;
+    --edge:#2c2f38;
+    --edge2:#3a3e49;
+    --ink:#e9e4d8;
+    --ink-dim:#9a958a;
+    --brass:#c9a25b;
+    --brass-dim:#8a7344;
+    --lamp:#ffd77a;
+    --lamp-dim:#3a3423;
+    --accent:#e0b25f;
+    --good:#7dc98f;
+    --bad:#e07a6a;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #1a1c24 0%, transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  a{color:var(--accent)}
+  ::selection{background:#c9a25b55}
+
+  /* ============ test banner ============ */
+  .test-banner{
+    position:sticky;top:0;z-index:99;
+    padding:.7rem 1rem;font-family:var(--mono);font-size:.85rem;
+    border-bottom:1px solid var(--edge);
+  }
+  .test-banner.pass{background:#12291a;color:var(--good)}
+  .test-banner.fail{background:#2d1512;color:var(--bad)}
+  .test-banner strong{font-size:1rem;letter-spacing:.08em}
+  .test-banner ul{list-style:none;margin-top:.3rem;display:flex;flex-wrap:wrap;gap:.25rem 1.5rem}
+
+  /* ============ header ============ */
+  header{max-width:1060px;margin:0 auto;padding:4rem 1.2rem 2.2rem;text-align:center}
+  .eyebrow{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--brass);margin-bottom:1.1rem;
+  }
+  h1.title{
+    font-size:clamp(3rem,9vw,5.4rem);
+    font-weight:800;letter-spacing:.06em;line-height:1.02;
+    background:linear-gradient(180deg,#f4ecd8 20%,#c9a25b 90%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .tagline{margin-top:1rem;color:var(--ink-dim);font-size:1.06rem;max-width:620px;margin-left:auto;margin-right:auto}
+  .tagline em{color:var(--ink);font-style:normal}
+
+  /* ============ machine shell ============ */
+  .machine-wrap{max-width:1060px;margin:0 auto;padding:0 1.2rem 2rem}
+  .machine{
+    background:
+      linear-gradient(180deg,#20222a 0%,#16171c 12%,#141519 100%);
+    border:1px solid var(--edge);
+    border-radius:18px;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.8), inset 0 1px 0 #ffffff12;
+    padding:clamp(1rem,3vw,2.2rem);
+  }
+  .plate{
+    display:flex;justify-content:space-between;align-items:baseline;
+    border-bottom:1px solid var(--edge);padding-bottom:1rem;margin-bottom:1.4rem;flex-wrap:wrap;gap:.5rem;
+  }
+  .plate .name{font-family:var(--mono);letter-spacing:.3em;font-size:.8rem;color:var(--brass)}
+  .plate .model{font-family:var(--mono);font-size:.72rem;color:var(--ink-dim);letter-spacing:.12em}
+
+  .glabel{
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--brass);margin-bottom:.15rem;
+  }
+  .glabel .en{color:var(--ink-dim);letter-spacing:.05em;text-transform:none;margin-left:.5em}
+
+  /* ---- rotor deck ---- */
+  .rotor-deck{
+    display:flex;gap:1rem;flex-wrap:wrap;align-items:stretch;justify-content:center;
+    margin-bottom:1.5rem;
+  }
+  .rotor-card{
+    background:var(--panel2);border:1px solid var(--edge);border-radius:12px;
+    padding:.8rem .9rem;min-width:150px;flex:0 1 auto;text-align:center;
+  }
+  .rotor-card .slot{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;color:var(--ink-dim);text-transform:uppercase}
+  .rotor-card select{
+    width:100%;margin:.4rem 0;background:#101116;color:var(--ink);
+    border:1px solid var(--edge2);border-radius:7px;padding:.32rem .4rem;
+    font-family:var(--mono);font-size:.85rem;appearance:auto;
+  }
+  .win-row{display:flex;align-items:center;justify-content:center;gap:.55rem;margin:.45rem 0 .2rem}
+  .stepbtn{
+    width:34px;height:30px;border-radius:7px;border:1px solid var(--edge2);
+    background:linear-gradient(180deg,#262932,#191b21);color:var(--brass);
+    font-size:.8rem;cursor:pointer;touch-action:manipulation;user-select:none;
+  }
+  .stepbtn:active{transform:translateY(1px);background:#14161b}
+  .rotor-window{
+    width:52px;height:60px;border-radius:8px;
+    background:linear-gradient(180deg,#efe6ce,#d8cba6);
+    color:#1c1a14;font-family:var(--mono);font-size:2rem;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    border:3px solid #0b0c0e;box-shadow:inset 0 3px 8px rgba(0,0,0,.45), 0 0 0 1px var(--brass-dim);
+  }
+  .ringrow{display:flex;align-items:center;justify-content:center;gap:.45rem;font-size:.72rem;color:var(--ink-dim)}
+  .ringrow select{width:auto;min-width:64px}
+  .refl-card select{margin-top:1.1rem}
+  .refl-card .hint{font-size:.68rem;color:var(--ink-dim);margin-top:.55rem;line-height:1.4}
+
+  /* ---- lampboard + keyboard ---- */
+  .board{margin:1.2rem 0}
+  .krow{display:flex;justify-content:center;gap:clamp(.25rem,1.1vw,.55rem);margin-bottom:clamp(.25rem,1.1vw,.55rem)}
+  .lamp,.key{
+    width:clamp(30px,8.4vw,50px);height:clamp(30px,8.4vw,50px);
+    border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-weight:700;font-size:clamp(.8rem,2.4vw,1.05rem);
+    user-select:none;-webkit-user-select:none;
+  }
+  .lamp{
+    background:radial-gradient(circle at 38% 32%, #3f3a2a, var(--lamp-dim) 70%);
+    color:#79704f;border:1px solid #4a4432;
+    transition:box-shadow .12s,color .12s,background .12s;
+  }
+  .lamp.lit{
+    background:radial-gradient(circle at 40% 32%, #fff3cf, var(--lamp) 60%, #c98f2e);
+    color:#3a2c07;border-color:#f0cd7c;
+    box-shadow:0 0 18px 4px #ffcf6666, 0 0 46px 10px #ffb84d33;
+  }
+  .key{
+    background:linear-gradient(180deg,#23252d,#121317);
+    color:#d5d8de;border:2px solid #40434d;
+    box-shadow:0 3px 0 #0a0b0d, inset 0 1px 0 #ffffff14;
+    cursor:pointer;touch-action:manipulation;
+    transition:transform .05s;
+  }
+  .key:active,.key.down{transform:translateY(2px);box-shadow:0 1px 0 #0a0b0d;border-color:var(--brass-dim);color:var(--brass)}
+
+  /* ---- plugboard ---- */
+  .plugboard{margin-top:1.4rem;border-top:1px solid var(--edge);padding-top:1.2rem}
+  .jack{
+    flex-direction:column;gap:2px;border-radius:9px;
+    width:clamp(30px,8.4vw,50px);height:clamp(38px,9.5vw,56px);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-weight:700;font-size:clamp(.72rem,2.2vw,.95rem);
+    background:linear-gradient(180deg,#1c1e24,#121317);
+    border:1px solid #383b45;color:#b9bdc6;cursor:pointer;
+    user-select:none;-webkit-user-select:none;touch-action:manipulation;
+    position:relative;
+  }
+  .jack .hole{width:7px;height:7px;border-radius:50%;background:#07080a;border:1px solid #4a4e59}
+  .jack.pending{border-color:var(--accent);box-shadow:0 0 0 2px #e0b25f44;color:var(--accent)}
+  .jack.paired{border-width:2px}
+  .jack .pairtag{
+    position:absolute;bottom:-7px;font-size:.55rem;padding:0 5px;border-radius:6px;
+    background:#0c0d10;line-height:1.25;letter-spacing:.05em;
+  }
+  .plug-note{text-align:center;font-size:.72rem;color:var(--ink-dim);margin-top:1rem}
+
+  /* ---- tapes & trace ---- */
+  .io-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+  @media (max-width:640px){.io-grid{grid-template-columns:1fr}}
+  .tape{
+    background:#0e0f13;border:1px solid var(--edge);border-radius:10px;
+    padding:.7rem .9rem;min-height:5.4rem;
+  }
+  .tape .txt{
+    font-family:var(--mono);font-size:1rem;letter-spacing:.14em;line-height:1.7;
+    word-break:break-all;color:var(--ink);min-height:2.6rem;
+  }
+  .tape.out .txt{color:var(--lamp)}
+  .tape .txt .ph{color:#3d4048;letter-spacing:.05em}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-top:1.2rem;flex-wrap:wrap;gap:.7rem}
+  .btn{
+    background:linear-gradient(180deg,#2a2d36,#191b21);color:var(--ink);
+    border:1px solid var(--edge2);border-radius:9px;padding:.5rem 1.1rem;
+    font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;cursor:pointer;
+    touch-action:manipulation;
+  }
+  .btn:active{transform:translateY(1px)}
+  .hint-type{font-size:.74rem;color:var(--ink-dim);font-family:var(--mono)}
+
+  .trace-wrap{margin-top:1.4rem;border-top:1px solid var(--edge);padding-top:1.2rem}
+  .trace{
+    display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .15rem;
+    min-height:64px;padding:.55rem .3rem;
+  }
+  .trace .empty{color:#3d4048;font-family:var(--mono);font-size:.8rem;padding:.6rem .3rem}
+  .chip{display:flex;flex-direction:column;align-items:center;min-width:44px}
+  .chip .stage{font-size:.55rem;letter-spacing:.04em;color:var(--ink-dim);font-family:var(--mono);white-space:nowrap}
+  .chip .ltr{
+    font-family:var(--mono);font-weight:700;font-size:1.05rem;
+    width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    background:#14161b;border:1px solid var(--edge2);color:var(--ink);margin-top:2px;
+  }
+  .chip.in .ltr{border-color:#7fa8d9;color:#a8c8ee}
+  .chip.out .ltr{border-color:var(--lamp);color:var(--lamp);box-shadow:0 0 10px #ffd77a33}
+  .chip.ukw .ltr{border-color:var(--brass);color:var(--brass)}
+  .arrow{color:#4a4e59;font-size:.9rem;padding:0 1px;transform:translateY(7px)}
+  .trace-sentence{font-size:.74rem;color:var(--ink-dim);margin-top:.4rem;font-family:var(--mono);word-break:break-all}
+
+  /* ============ story ============ */
+  .story{max-width:760px;margin:0 auto;padding:3rem 1.2rem 5rem}
+  .story section{margin-top:4.2rem}
+  .story h2{
+    font-size:clamp(1.7rem,4.6vw,2.3rem);font-weight:800;letter-spacing:.03em;color:#f0ead9;
+    line-height:1.15;
+  }
+  .story h2 .sub{
+    display:block;font-size:.82rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--brass);margin-bottom:.55rem;font-family:var(--mono);
+  }
+  .story p{margin-top:1.05rem;color:#cfcabd;font-size:1.02rem}
+  .story strong{color:var(--ink)}
+  .story .pull{
+    margin:1.6rem 0;padding:1rem 1.3rem;border-left:3px solid var(--brass);
+    background:#15161b;border-radius:0 10px 10px 0;color:var(--ink);font-size:1.02rem;
+  }
+  .story ul{margin:1rem 0 0 1.2rem;color:#cfcabd}
+  .story li{margin-top:.5rem}
+  .kfig{
+    margin:1.6rem 0;background:#101116;border:1px solid var(--edge);border-radius:12px;
+    padding:1.1rem 1.2rem;font-family:var(--mono);
+  }
+  .kfig .big{font-size:clamp(1.1rem,3.6vw,1.6rem);color:var(--lamp);word-break:break-all}
+  .kfig .cap{font-size:.74rem;color:var(--ink-dim);margin-top:.4rem;font-family:system-ui,sans-serif}
+  .path-svg{width:100%;height:auto;margin:1.5rem 0 .3rem;display:block}
+  .mini-table{width:100%;border-collapse:collapse;margin-top:1.2rem;font-size:.92rem}
+  .mini-table th,.mini-table td{padding:.55rem .6rem;border-bottom:1px solid var(--edge);text-align:left;vertical-align:top}
+  .mini-table th{font-family:var(--mono);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--brass)}
+  .mini-table td{color:#cfcabd}
+  .tbl-scroll{overflow-x:auto}
+  footer{
+    text-align:center;color:#5a5d66;font-size:.75rem;font-family:var(--mono);
+    padding:2.5rem 1rem 3.5rem;border-top:1px solid #1b1d23;letter-spacing:.08em;
+  }
+</style>
+</head>
+<body>
+
+<div id="testHost"></div>
+
+<header>
+  <div class="eyebrow">1918 · Berlin — 1945 · Bletchley Park</div>
+  <h1 class="title">DIE&nbsp;ENIGMA</h1>
+  <p class="tagline">A working replica of the German cipher machine that guarded the Wehrmacht's secrets — and the story of the mathematicians who <em>broke the unbreakable</em>. Type below. Every key you press turns the rotors, just like in 1940.</p>
+</header>
+
+<!-- ================= THE MACHINE ================= -->
+<div class="machine-wrap">
+  <div class="machine" id="machinePanel">
+    <div class="plate">
+      <span class="name">ENIGMA&nbsp;I</span>
+      <span class="model">Chiffriermaschinen A.G. · Berlin · Wehrmacht-Ausführung</span>
+    </div>
+
+    <!-- rotors -->
+    <div class="glabel" style="text-align:center">Walzen <span class="en">rotors &amp; reflector</span></div>
+    <div class="rotor-deck" id="rotorDeck">
+      <!-- rotor cards injected -->
+    </div>
+
+    <!-- lampboard -->
+    <div class="board">
+      <div class="glabel">Lampenfeld <span class="en">lampboard — the ciphered letter lights up</span></div>
+      <div id="lampboard"></div>
+    </div>
+
+    <!-- keyboard -->
+    <div class="board">
+      <div class="glabel">Tastatur <span class="en">keyboard — click, tap, or type</span></div>
+      <div id="keyboard"></div>
+    </div>
+
+    <!-- tapes -->
+    <div class="io-grid">
+      <div class="tape">
+        <div class="glabel">Klartext <span class="en">input</span></div>
+        <div class="txt" id="tapeIn"><span class="ph">waiting for input…</span></div>
+      </div>
+      <div class="tape out">
+        <div class="glabel">Geheimtext <span class="en">output</span></div>
+        <div class="txt" id="tapeOut"><span class="ph">—</span></div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn" id="resetBtn">⟲ ZURÜCKSETZEN — RESET</button>
+      <span class="hint-type" id="hintType">tip: type on your physical keyboard</span>
+    </div>
+
+    <!-- signal trace -->
+    <div class="trace-wrap">
+      <div class="glabel">Stromweg <span class="en">live signal path of the last keypress</span></div>
+      <div class="trace" id="trace"><div class="empty">Press a key to watch the current travel: plugboard → rotors → reflector → back again.</div></div>
+      <div class="trace-sentence" id="traceSentence"></div>
+    </div>
+
+    <!-- plugboard -->
+    <div class="plugboard">
+      <div class="glabel">Steckerbrett <span class="en">plugboard — click two letters to connect a cable</span></div>
+      <div id="plugboardEl"></div>
+      <div class="plug-note" id="plugNote">No cables connected. A real operator plugged in ten pairs.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= THE STORY ================= -->
+<div class="story">
+
+  <section id="history">
+    <h2><span class="sub">Die Geschichte · the history</span>A radio problem, a Berlin engineer, and total confidence</h2>
+    <p>Radio changed war before Enigma did. By 1918 every army broadcast its orders into the open air, where anyone with an antenna could copy them down. The German electrical engineer <strong>Arthur Scherbius</strong> patented his answer that year: a typewriter-sized machine that scrambled each letter through a stack of rotating, wired wheels. He called it <em>Enigma</em> and sold it commercially in the 1920s to banks and businesses — with modest success at best.</p>
+    <p>The military was the customer that mattered. The <strong>Reichsmarine adopted a modified Enigma in 1926</strong>, the army followed in 1928, and by the mid-1930s the rebuilt Wehrmacht had made the <strong>Enigma I</strong> — three rotors chosen from five, a reflector, and a front-panel plugboard — the standard cipher machine of a nation preparing for war. Scherbius never saw it: he died in 1929 after a carriage accident.</p>
+    <p>Why did Germany trust it so completely? Do the arithmetic and you'll sympathize. The daily key — which rotors, in what order, at which ring settings, with which ten plugboard cables — could be chosen in roughly <strong>159 quintillion ways</strong>. Testing every setting by hand, even at one per second, would take longer than the age of the universe. German cryptographers concluded that no enemy could ever search that space, and for the entire war most of them never seriously doubted it. Their mistake was subtle: the machine's <em>mathematics</em> leaked patterns that made searching the whole space unnecessary.</p>
+  </section>
+
+  <section id="breaking">
+    <h2><span class="sub">Die Entzifferung · the breaking</span>Three Polish mathematicians, then ten thousand people at Bletchley</h2>
+    <p>The first crack came not from Britain but from <strong>Poland</strong> — a country that, squeezed between Germany and the USSR, could not afford to be blind. In 1932 the Polish Cipher Bureau handed the Enigma problem to three young mathematicians: <strong>Marian Rejewski, Jerzy Różycki, and Henryk Zygalski</strong>. Armed with permutation theory and setting sheets bought from a German spy by French intelligence, Rejewski achieved something astonishing: he <strong>reconstructed the secret internal wiring of the rotors by pure mathematics</strong>, without ever seeing a military machine. The Poles then read German traffic for most of the 1930s, inventing the <em>Zygalski sheets</em> and an electromechanical search machine they named the <strong>bomba</strong>.</p>
+    <p>By 1938 Germany kept adding rotors and cables, and Poland was running out of money and time. So in <strong>July 1939, weeks before the invasion</strong>, the Poles summoned French and British cryptologists to a secret meeting in the Kabaty woods near Warsaw and gave away everything — the theory, the methods, and working Enigma replicas. It is one of the great acts of intellectual generosity in history, and it saved the Allies years.</p>
+    <p>The inheritance landed at <strong>Bletchley Park</strong>, Britain's Government Code and Cypher School. There <strong>Alan Turing</strong> redesigned the Polish idea into something far more powerful: the British <strong>Bombe</strong>, a machine that exploited <em>cribs</em> — guessed plaintext fragments such as weather reports beginning <span style="font-family:var(--mono)">WETTERVORHERSAGE</span> — to reject millions of wrong rotor settings by electrical contradiction. <strong>Gordon Welchman's "diagonal board"</strong> made it vastly more efficient by wiring in the plugboard's symmetry. The first Bombe ran in 1940; some two hundred followed, tended around the clock, largely by the women of the Wrens.</p>
+    <p>The hardest theatre was the sea. Turing's <strong>Hut 8</strong> attacked the naval Enigma that coordinated the U-boat wolfpacks, and when the Kriegsmarine introduced the four-rotor <strong>M4</strong> in February 1942, Bletchley went dark on the Atlantic for ten agonizing months — a blackout ended partly by sailors <strong>seizing codebooks from the sinking U-559</strong>, two of whom drowned retrieving them. From then on, convoys were routed around wolfpacks the Germans believed invisible.</p>
+    <div class="pull">Germany asked: "Can the enemy try 159,000,000,000,000,000,000 keys?" The Allies asked a better question: "How few keys do we actually need to try?"</div>
+  </section>
+
+  <section id="impact">
+    <h2><span class="sub">Die Wirkung · the impact</span>The secret that shortened the war</h2>
+    <p>Decrypted Enigma traffic — codenamed <strong>Ultra</strong> — became the Allies' most precious secret. It guided convoys through the <strong>Battle of the Atlantic</strong>, exposed Rommel's supply ships in the Mediterranean, and in 1944 confirmed that the <strong>D-Day deception</strong> had worked: intercepts showed Hitler still expecting the "real" invasion at Calais while the troops waded ashore at Normandy. Eisenhower called Ultra "decisive." The official historian of British intelligence, Harry Hinsley, estimated it <strong>shortened the war in Europe by around two years</strong> — years that, at the war's rate of killing, translate into <strong>millions of lives</strong>.</p>
+    <p>The strangest part is the silence. Tens of thousands of people worked the secret and kept it for three decades; the story only surfaced in 1974. Which makes the fate of its central figure harder to bear. In 1952 <strong>Alan Turing was prosecuted for being gay</strong>, stripped of his security clearance, and sentenced to chemical castration. He died of cyanide poisoning in 1954, at 41. Britain apologized in 2009 and pardoned him in 2013 — and in 2021 put his face on the £50 note.</p>
+    <p>His legacy outgrew the war entirely. The 1936 paper on "computable numbers" — the <strong>Turing machine</strong> — is the founding document of computer science; the <strong>Turing test</strong> still frames how we argue about machine intelligence. The device you are reading this on is, in a real lineage, a descendant of the ideas that broke Enigma.</p>
+  </section>
+
+  <section id="movie">
+    <h2><span class="sub">Der Film · the movie</span>"The Imitation Game" — what it gets right, and wrong</h2>
+    <p>The 2014 film with <strong>Benedict Cumberbatch</strong> put Turing and Bletchley into popular memory, and much of its spine is true: the cribs, the race against the daily key change, the agonizing choice to <em>not act</em> on some intelligence so the secret would survive, and the cruelty of Turing's persecution. As drama, it earns its place. As history, treat it as a well-made legend:</p>
+    <ul>
+      <li><strong>Turing didn't work alone against a hostile team.</strong> Bletchley was a collaborative operation of nearly ten thousand people; colleagues respected him, and Commander Denniston was no saboteur.</li>
+      <li><strong>The Bombe wasn't named "Christopher."</strong> The first machine was called <em>Victory</em>; the name honoring Turing's schoolfriend Christopher Morcom is invention. Turing also didn't build it with his own hands — it was engineered by Harold Keen at the British Tabulating Machine Company.</li>
+      <li><strong>The Polish contribution is skipped almost entirely.</strong> Rejewski, Różycki, and Zygalski broke Enigma first and handed over the keys to the kingdom; the film compresses them into a single line about a smuggled machine.</li>
+      <li><strong>Gordon Welchman is erased.</strong> His diagonal board is quietly credited to Hugh Alexander, and the "eureka" scene — realizing predictable phrases break the cipher — dramatizes something cryptanalysts had known for years.</li>
+      <li><strong>The spy subplot is fiction.</strong> John Cairncross was a real Soviet agent at Bletchley, but there's no evidence he ever met Turing, let alone blackmailed him.</li>
+    </ul>
+  </section>
+
+  <section id="algorithm">
+    <h2><span class="sub">Der Algorithmus · how it actually works</span>A substitution cipher that never repeats itself</h2>
+    <p>Strip away the brass and Enigma is one idea: a <strong>substitution alphabet that changes with every single keypress</strong>. A fixed substitution ("every A becomes F") dies quickly to frequency analysis. Enigma re-scrambles the whole alphabet each time a key goes down, because the rotors physically move <em>before</em> the electrical contact is made.</p>
+    <p>Press a key and a battery current takes this round trip:</p>
+    <svg class="path-svg" viewBox="0 0 720 190" role="img" aria-label="Signal path diagram: keyboard through plugboard, three rotors, reflector, and back to the lampboard">
+      <defs>
+        <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#c9a25b"/></marker>
+        <marker id="ah2" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#7fa8d9"/></marker>
+      </defs>
+      <g font-family="ui-monospace,Menlo,monospace" font-size="11" text-anchor="middle">
+        <rect x="10" y="70" width="88" height="50" rx="8" fill="#1d1f26" stroke="#3a3e49"/>
+        <text x="54" y="91" fill="#e9e4d8">TASTE</text><text x="54" y="106" fill="#9a958a" font-size="9">key A</text>
+        <rect x="128" y="70" width="88" height="50" rx="8" fill="#1d1f26" stroke="#3a3e49"/>
+        <text x="172" y="91" fill="#e9e4d8">STECKER</text><text x="172" y="106" fill="#9a958a" font-size="9">plugboard</text>
+        <rect x="246" y="45" width="66" height="100" rx="8" fill="#22242c" stroke="#8a7344"/>
+        <text x="279" y="100" fill="#e0b25f">III</text><text x="279" y="130" fill="#9a958a" font-size="9">fast</text>
+        <rect x="330" y="45" width="66" height="100" rx="8" fill="#22242c" stroke="#8a7344"/>
+        <text x="363" y="100" fill="#e0b25f">II</text><text x="363" y="130" fill="#9a958a" font-size="9">middle</text>
+        <rect x="414" y="45" width="66" height="100" rx="8" fill="#22242c" stroke="#8a7344"/>
+        <text x="447" y="100" fill="#e0b25f">I</text><text x="447" y="130" fill="#9a958a" font-size="9">slow</text>
+        <rect x="510" y="45" width="72" height="100" rx="8" fill="#26221a" stroke="#c9a25b"/>
+        <text x="546" y="93" fill="#e0b25f">UKW</text><text x="546" y="108" fill="#9a958a" font-size="9">reflector</text>
+        <rect x="620" y="70" width="88" height="50" rx="8" fill="#26210f" stroke="#e0b25f"/>
+        <text x="664" y="91" fill="#ffd77a">LAMPE</text><text x="664" y="106" fill="#9a958a" font-size="9">lamp Q</text>
+        <path d="M98,85 H126" stroke="#c9a25b" fill="none" marker-end="url(#ah)"/>
+        <path d="M216,85 H244" stroke="#c9a25b" fill="none" marker-end="url(#ah)"/>
+        <path d="M312,75 H328" stroke="#c9a25b" fill="none" marker-end="url(#ah)"/>
+        <path d="M396,75 H412" stroke="#c9a25b" fill="none" marker-end="url(#ah)"/>
+        <path d="M480,75 H508" stroke="#c9a25b" fill="none" marker-end="url(#ah)"/>
+        <path d="M508,115 H482" stroke="#7fa8d9" fill="none" marker-end="url(#ah2)"/>
+        <path d="M412,115 H398" stroke="#7fa8d9" fill="none" marker-end="url(#ah2)"/>
+        <path d="M328,115 H314" stroke="#7fa8d9" fill="none" marker-end="url(#ah2)"/>
+        <path d="M244,115 H218" stroke="#7fa8d9" fill="none" marker-end="url(#ah2)"/>
+        <path d="M172,120 V160 H664 V122" stroke="#7fa8d9" fill="none" marker-end="url(#ah2)"/>
+        <text x="418" y="175" fill="#7fa8d9" font-size="9">← the return journey, back through everything</text>
+      </g>
+    </svg>
+    <p>The <strong>plugboard</strong> swaps the letter if a cable is present. Each <strong>rotor</strong> applies its own scrambled wiring, offset by its current rotation and ring setting. The <strong>reflector</strong> (Umkehrwalze) bounces the current back through all three rotors <em>along a different path</em>, through the plugboard again, and lights a lamp. Right rotor steps every key; at its notch it kicks the middle rotor; the middle rotor's own notch kicks the left one — with a mechanical quirk, the famous <strong>double-step</strong>, where the middle rotor advances twice in a row. Watch the <em>Stromweg</em> panel above: that letter chain is exactly this journey.</p>
+
+    <p><strong>The fatal elegance: a letter can never encrypt to itself.</strong> The reflector pairs the 26 wires into 13 two-way streets, so the current always comes back on a <em>different</em> wire than it went out on. Press A, and you may get anything — except A. It sounds harmless. It was catastrophic. If you guess that a ciphertext contains the phrase <span style="font-family:var(--mono)">WETTERBERICHT</span>, every alignment where any letter would map to itself is <em>provably wrong</em>. Cribs plus this rule let the Bombe cascade contradictions and discard almost the entire keyspace without testing it.</p>
+
+    <p><strong>The same elegance made it symmetric.</strong> Because every path is reversible, encryption and decryption are the <em>same operation</em>: set your machine to the same daily key, type the ciphertext, and the plaintext lights up. Wonderful for field operators — and it means the plugboard, reflector, and whole machine are one big self-inverse permutation, structure a mathematician like Rejewski could sink theorems into.</p>
+
+    <div class="kfig">
+      <div class="big">158,962,555,217,826,360,000</div>
+      <div class="cap">≈ 1.59 × 10²⁰ possible keys for the Wehrmacht Enigma: 60 rotor orders (3 from 5) × 17,576 rotor start positions × 150,738,274,937,250 ways to plug ten cables. The plugboard contributes almost all of it — and Welchman's diagonal board neutralized the plugboard almost entirely.</div>
+    </div>
+
+    <p>And the machine was only half the weakness. Operators chose girlfriend-initials as message keys, re-sent identical messages under old and new keys, and one bored station transmitted nothing but <span style="font-family:var(--mono)">L</span>s — which, since a letter never maps to itself, told Bletchley instantly what the message <em>wasn't</em>. Enigma's story is the permanent security lesson: <strong>a strong algorithm, used by humans, is only as strong as its habits.</strong></p>
+
+    <div class="tbl-scroll">
+    <table class="mini-table">
+      <tr><th>Walze</th><th>Wiring (A→…)</th><th>Notch</th></tr>
+      <tr><td>I</td><td style="font-family:var(--mono)">EKMFLGDQVZNTOWYHXUSPAIBRCJ</td><td style="font-family:var(--mono)">Q</td></tr>
+      <tr><td>II</td><td style="font-family:var(--mono)">AJDKSIRUXBLHWTMCQGZNPYFVOE</td><td style="font-family:var(--mono)">E</td></tr>
+      <tr><td>III</td><td style="font-family:var(--mono)">BDFHJLCPRTXVZNYEIWGAKMUSQO</td><td style="font-family:var(--mono)">V</td></tr>
+      <tr><td>IV</td><td style="font-family:var(--mono)">ESOVPZJAYQUIRHXLNFTGKDCMWB</td><td style="font-family:var(--mono)">J</td></tr>
+      <tr><td>V</td><td style="font-family:var(--mono)">VZBRGITYUPSDNHLXAWMJQOFECK</td><td style="font-family:var(--mono)">Z</td></tr>
+      <tr><td>UKW-B</td><td style="font-family:var(--mono)">YRUHQSLDPXNGOKMIEBFZCWVJAT</td><td>—</td></tr>
+      <tr><td>UKW-C</td><td style="font-family:var(--mono)">FVPJIAOYEDRZXWGCTKUQSBNMHL</td><td>—</td></tr>
+    </table>
+    </div>
+    <p style="font-size:.85rem;color:var(--ink-dim)">These are the authentic historical wirings — the same tables running in the simulator above.</p>
+  </section>
+
+</div>
+
+<footer>DIE ENIGMA · a single-file simulation · no servers, no tracking, no external anything</footer>
+
+<script>
+'use strict';
+/* ==================================================================
+   ENIGMA I — historically accurate core
+   ================================================================== */
+const A = 65;
+const L26 = s => [...s].map(c => c.charCodeAt(0) - A);
+const ROTOR_SPECS = {
+  'I':   { w:'EKMFLGDQVZNTOWYHXUSPAIBRCJ', notch:'Q' },
+  'II':  { w:'AJDKSIRUXBLHWTMCQGZNPYFVOE', notch:'E' },
+  'III': { w:'BDFHJLCPRTXVZNYEIWGAKMUSQO', notch:'V' },
+  'IV':  { w:'ESOVPZJAYQUIRHXLNFTGKDCMWB', notch:'J' },
+  'V':   { w:'VZBRGITYUPSDNHLXAWMJQOFECK', notch:'Z' },
+};
+const REFLECTOR_SPECS = {
+  'B': 'YRUHQSLDPXNGOKMIEBFZCWVJAT',
+  'C': 'FVPJIAOYEDRZXWGCTKUQSBNMHL',
+};
+
+class Rotor {
+  constructor(name, ring, pos) {           // ring, pos: 0..25
+    this.name = name;
+    this.map = L26(ROTOR_SPECS[name].w);
+    this.rev = [];
+    this.map.forEach((v, i) => this.rev[v] = i);
+    this.notch = ROTOR_SPECS[name].notch.charCodeAt(0) - A;
+    this.ring = ring;
+    this.pos = pos;
+  }
+  atNotch() { return this.pos === this.notch; }
+  step()    { this.pos = (this.pos + 1) % 26; }
+  fwd(c) { const s = this.pos - this.ring; return (this.map[(c + s + 26) % 26] - s + 52) % 26; }
+  bwd(c) { const s = this.pos - this.ring; return (this.rev[(c + s + 26) % 26] - s + 52) % 26; }
+}
+
+class Enigma {
+  /**
+   * rotors: [leftName, midName, rightName]
+   * rings / positions: 3-letter strings, left→right
+   * plugPairs: e.g. "AB CD EF"
+   */
+  constructor(rotors, reflector, rings, positions, plugPairs) {
+    const r = L26(rings.toUpperCase()), p = L26(positions.toUpperCase());
+    this.left  = new Rotor(rotors[0], r[0], p[0]);
+    this.mid   = new Rotor(rotors[1], r[1], p[1]);
+    this.right = new Rotor(rotors[2], r[2], p[2]);
+    this.reflName = reflector;
+    this.refl = L26(REFLECTOR_SPECS[reflector]);
+    this.plug = Array.from({length: 26}, (_, i) => i);
+    (plugPairs || '').toUpperCase().split(/[\s,]+/).filter(Boolean).forEach(pair => {
+      const a = pair.charCodeAt(0) - A, b = pair.charCodeAt(1) - A;
+      this.plug[a] = b; this.plug[b] = a;
+    });
+  }
+  positions() {
+    return String.fromCharCode(this.left.pos + A, this.mid.pos + A, this.right.pos + A);
+  }
+  stepRotors() {
+    // Wehrmacht stepping incl. the double-stepping anomaly:
+    if (this.mid.atNotch()) { this.left.step(); this.mid.step(); }
+    else if (this.right.atNotch()) { this.mid.step(); }
+    this.right.step();
+  }
+  press(c) {                                // c: 0..25 — rotors step BEFORE encipherment
+    this.stepRotors();
+    const t = [{ stage: 'Taste', c }];
+    let x = this.plug[c];                    t.push({ stage: 'Stecker', c: x });
+    x = this.right.fwd(x);                   t.push({ stage: this.right.name + ' →', c: x });
+    x = this.mid.fwd(x);                     t.push({ stage: this.mid.name + ' →', c: x });
+    x = this.left.fwd(x);                    t.push({ stage: this.left.name + ' →', c: x });
+    x = this.refl[x];                        t.push({ stage: 'UKW-' + this.reflName, c: x });
+    x = this.left.bwd(x);                    t.push({ stage: '← ' + this.left.name, c: x });
+    x = this.mid.bwd(x);                     t.push({ stage: '← ' + this.mid.name, c: x });
+    x = this.right.bwd(x);                   t.push({ stage: '← ' + this.right.name, c: x });
+    x = this.plug[x];                        t.push({ stage: 'Stecker', c: x });
+    t.push({ stage: 'Lampe', c: x });
+    return { out: x, trace: t };
+  }
+  encrypt(text) {
+    let out = '';
+    for (const ch of text.toUpperCase()) {
+      if (ch < 'A' || ch > 'Z') continue;
+      out += String.fromCharCode(this.press(ch.charCodeAt(0) - A).out + A);
+    }
+    return out;
+  }
+}
+
+/* ==================================================================
+   UI
+   ================================================================== */
+const KB_ROWS = ['QWERTZUIO', 'ASDFGHJK', 'PYXCVBNML'];   // authentic Enigma layout
+const PAIR_COLORS = ['#e0b25f','#7fa8d9','#7dc98f','#d98fb8','#c98f6a','#9d8fd9','#6ac9c2','#d9d06a','#e07a6a','#8fb86a','#b8b8c9','#d9a86a','#6a9dd9'];
+const $ = id => document.getElementById(id);
+
+const state = {
+  rotors: ['I', 'II', 'III'],   // left, mid, right
+  reflector: 'B',
+  rings: [0, 0, 0],
+  startPos: [0, 0, 0],
+  plugPairs: [],                // [[a,b], ...] 0..25
+  machine: null,
+  inText: '',
+  outText: '',
+  pendingJack: null,
+};
+
+function plugString() { return state.plugPairs.map(([a,b]) => String.fromCharCode(a+A, b+A)).join(' '); }
+function s3(arr) { return arr.map(i => String.fromCharCode(i + A)).join(''); }
+
+function buildMachine(keepPositions) {
+  const pos = keepPositions && state.machine
+    ? [state.machine.left.pos, state.machine.mid.pos, state.machine.right.pos]
+    : state.startPos.slice();
+  state.machine = new Enigma(state.rotors, state.reflector, s3(state.rings), s3(pos), plugString());
+}
+
+/* ---- rotor deck ---- */
+const SLOT_META = [
+  { key: 0, de: 'Walze links',  en: 'slow' },
+  { key: 1, de: 'Walze mitte',  en: 'middle' },
+  { key: 2, de: 'Walze rechts', en: 'fast' },
+];
+function renderRotorDeck() {
+  const deck = $('rotorDeck');
+  deck.innerHTML = '';
+  SLOT_META.forEach(meta => {
+    const i = meta.key;
+    const card = document.createElement('div');
+    card.className = 'rotor-card';
+    card.innerHTML = `
+      <div class="slot">${meta.de} · ${meta.en}</div>
+      <select data-rsel="${i}" aria-label="rotor for ${meta.de}">
+        ${Object.keys(ROTOR_SPECS).map(n => `<option ${n===state.rotors[i]?'selected':''}>${n}</option>`).join('')}
+      </select>
+      <div class="win-row">
+        <button class="stepbtn" data-step="${i}" data-dir="-1" aria-label="step down">▼</button>
+        <div class="rotor-window" data-win="${i}">A</div>
+        <button class="stepbtn" data-step="${i}" data-dir="1" aria-label="step up">▲</button>
+      </div>
+      <div class="ringrow">Ring
+        <select data-ring="${i}" aria-label="ring setting">
+          ${Array.from({length:26},(_,k)=>`<option value="${k}" ${k===state.rings[i]?'selected':''}>${String(k+1).padStart(2,'0')} · ${String.fromCharCode(k+A)}</option>`).join('')}
+        </select>
+      </div>`;
+    deck.appendChild(card);
+  });
+  const rc = document.createElement('div');
+  rc.className = 'rotor-card refl-card';
+  rc.innerHTML = `
+    <div class="slot">Umkehrwalze · reflector</div>
+    <select id="reflSel" aria-label="reflector">
+      ${Object.keys(REFLECTOR_SPECS).map(n => `<option value="${n}" ${n===state.reflector?'selected':''}>UKW-${n}</option>`).join('')}
+    </select>
+    <div class="hint">The reflector bounces the current back — and guarantees no letter ever encrypts to itself.</div>`;
+  deck.appendChild(rc);
+
+  deck.querySelectorAll('select[data-rsel]').forEach(sel => sel.addEventListener('change', e => {
+    state.rotors[+e.target.dataset.rsel] = e.target.value;
+    configChanged();
+  }));
+  deck.querySelectorAll('select[data-ring]').forEach(sel => sel.addEventListener('change', e => {
+    state.rings[+e.target.dataset.ring] = +e.target.value;
+    configChanged();
+  }));
+  $('reflSel').addEventListener('change', e => { state.reflector = e.target.value; configChanged(); });
+  deck.querySelectorAll('button[data-step]').forEach(btn => btn.addEventListener('click', e => {
+    const i = +btn.dataset.step, dir = +btn.dataset.dir;
+    const rot = [state.machine.left, state.machine.mid, state.machine.right][i];
+    rot.pos = (rot.pos + dir + 26) % 26;
+    state.startPos = [state.machine.left.pos, state.machine.mid.pos, state.machine.right.pos];
+    updateWindows();
+  }));
+}
+function updateWindows() {
+  const m = state.machine;
+  const p = [m.left.pos, m.mid.pos, m.right.pos];
+  document.querySelectorAll('.rotor-window').forEach(w => {
+    w.textContent = String.fromCharCode(p[+w.dataset.win] + A);
+  });
+}
+
+/* ---- boards ---- */
+function renderBoard(host, cls, dataAttr) {
+  host.innerHTML = '';
+  KB_ROWS.forEach(row => {
+    const div = document.createElement('div');
+    div.className = 'krow';
+    [...row].forEach(ch => {
+      const el = document.createElement('div');
+      el.className = cls;
+      el.setAttribute(dataAttr, ch);
+      if (cls === 'jack') el.innerHTML = `<span>${ch}</span><span class="hole"></span>`;
+      else el.textContent = ch;
+      div.appendChild(el);
+    });
+    host.appendChild(div);
+  });
+}
+
+/* ---- plugboard ---- */
+function renderPlugPairs() {
+  const colorOf = {};
+  state.plugPairs.forEach(([a,b], idx) => { colorOf[a] = colorOf[b] = PAIR_COLORS[idx % PAIR_COLORS.length]; });
+  const partner = {};
+  state.plugPairs.forEach(([a,b]) => { partner[a] = b; partner[b] = a; });
+  document.querySelectorAll('.jack').forEach(j => {
+    const c = j.getAttribute('data-jack').charCodeAt(0) - A;
+    j.classList.toggle('pending', state.pendingJack === c);
+    const col = colorOf[c];
+    j.classList.toggle('paired', !!col);
+    j.style.borderColor = col || '';
+    j.style.color = col || '';
+    let tag = j.querySelector('.pairtag');
+    if (col) {
+      if (!tag) { tag = document.createElement('span'); tag.className = 'pairtag'; j.appendChild(tag); }
+      tag.textContent = '⇄ ' + String.fromCharCode(partner[c] + A);
+      tag.style.color = col;
+      tag.style.border = '1px solid ' + col;
+    } else if (tag) tag.remove();
+  });
+  const n = state.plugPairs.length;
+  $('plugNote').textContent = n === 0
+    ? 'No cables connected. A real operator plugged in ten pairs.'
+    : `${n} cable${n>1?'s':''}: ` + state.plugPairs.map(([a,b]) => String.fromCharCode(a+A)+'–'+String.fromCharCode(b+A)).join('  ');
+}
+function jackClick(c) {
+  const idx = state.plugPairs.findIndex(([a,b]) => a === c || b === c);
+  if (idx >= 0) {                      // unplug existing cable
+    state.plugPairs.splice(idx, 1);
+    state.pendingJack = null;
+  } else if (state.pendingJack === null) {
+    state.pendingJack = c;
+  } else if (state.pendingJack === c) {
+    state.pendingJack = null;
+  } else {
+    state.plugPairs.push([state.pendingJack, c]);
+    state.pendingJack = null;
+  }
+  configChanged();
+  renderPlugPairs();
+}
+
+/* ---- tapes, lamps, trace ---- */
+function group5(s) { return s.replace(/(.{5})/g, '$1 ').trim(); }
+function renderTapes() {
+  $('tapeIn').innerHTML  = state.inText  ? group5(state.inText)  : '<span class="ph">waiting for input…</span>';
+  $('tapeOut').innerHTML = state.outText ? group5(state.outText) : '<span class="ph">—</span>';
+}
+let lampTimer = null;
+function lightLamp(c) {
+  document.querySelectorAll('.lamp.lit').forEach(l => l.classList.remove('lit'));
+  const el = document.querySelector(`.lamp[data-lamp="${String.fromCharCode(c + A)}"]`);
+  if (el) {
+    el.classList.add('lit');
+    clearTimeout(lampTimer);
+    lampTimer = setTimeout(() => el.classList.remove('lit'), 900);
+  }
+}
+function renderTrace(trace) {
+  const host = $('trace');
+  host.innerHTML = '';
+  trace.forEach((step, i) => {
+    if (i > 0) {
+      const ar = document.createElement('span');
+      ar.className = 'arrow'; ar.textContent = '›';
+      host.appendChild(ar);
+    }
+    const chip = document.createElement('div');
+    chip.className = 'chip' + (i === 0 ? ' in' : i === trace.length - 1 ? ' out' : step.stage.startsWith('UKW') ? ' ukw' : '');
+    chip.innerHTML = `<span class="stage">${step.stage}</span><span class="ltr">${String.fromCharCode(step.c + A)}</span>`;
+    host.appendChild(chip);
+  });
+  $('traceSentence').textContent = trace.map(s => String.fromCharCode(s.c + A)).join(' → ');
+}
+
+/* ---- keypress plumbing ---- */
+function pressLetter(ch) {
+  const c = ch.charCodeAt(0) - A;
+  const { out, trace } = state.machine.press(c);
+  state.inText += ch;
+  state.outText += String.fromCharCode(out + A);
+  updateWindows();
+  renderTapes();
+  lightLamp(out);
+  renderTrace(trace);
+  const key = document.querySelector(`.key[data-key="${ch}"]`);
+  if (key) { key.classList.add('down'); setTimeout(() => key.classList.remove('down'), 130); }
+}
+function resetMachine() {
+  state.inText = ''; state.outText = '';
+  buildMachine(false);
+  updateWindows(); renderTapes();
+  $('trace').innerHTML = '<div class="empty">Press a key to watch the current travel: plugboard → rotors → reflector → back again.</div>';
+  $('traceSentence').textContent = '';
+}
+function configChanged() {
+  // config edits restart the message with fresh settings
+  state.inText = ''; state.outText = '';
+  buildMachine(false);
+  updateWindows(); renderTapes();
+}
+
+/* ---- init ---- */
+function initUI() {
+  renderRotorDeck();
+  renderBoard($('lampboard'), 'lamp', 'data-lamp');
+  renderBoard($('keyboard'), 'key', 'data-key');
+  renderBoard($('plugboardEl'), 'jack', 'data-jack');
+  buildMachine(false);
+  updateWindows();
+  renderTapes();
+  renderPlugPairs();
+
+  $('keyboard').addEventListener('click', e => {
+    const k = e.target.closest('.key');
+    if (k) pressLetter(k.getAttribute('data-key'));
+  });
+  $('plugboardEl').addEventListener('click', e => {
+    const j = e.target.closest('.jack');
+    if (j) jackClick(j.getAttribute('data-jack').charCodeAt(0) - A);
+  });
+  $('resetBtn').addEventListener('click', resetMachine);
+
+  document.addEventListener('keydown', e => {
+    if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return;
+    const t = e.target;
+    if (t && (t.tagName === 'SELECT' || t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
+    const ch = e.key.toUpperCase();
+    if (ch.length === 1 && ch >= 'A' && ch <= 'Z') { pressLetter(ch); e.preventDefault(); }
+  });
+  if ('ontouchstart' in window) $('hintType').textContent = 'tap the Tastatur keys to encipher';
+}
+
+/* ==================================================================
+   SELF-TESTS (?test)
+   ================================================================== */
+function runSelfTests() {
+  const results = [];
+  const add = (name, ok, detail) => results.push({ name, ok, detail });
+
+  // (a) canonical vector
+  try {
+    const m = new Enigma(['I','II','III'], 'B', 'AAA', 'AAA', '');
+    const ct = m.encrypt('AAAAA');
+    add('vector AAAAA→BDZGO', ct === 'BDZGO', 'got ' + ct);
+  } catch (e) { add('vector AAAAA→BDZGO', false, String(e)); }
+
+  // (b) reciprocity with nontrivial config
+  try {
+    const cfg = () => new Enigma(['IV','II','V'], 'C', 'BUL', 'XWB', 'AT BS DE FG HZ IK LO MQ NW PY');
+    const pt = 'THEQUICKBROWNFOX';
+    const ct = cfg().encrypt(pt);
+    const rt = cfg().encrypt(ct);
+    add('reciprocity (rings+plugs)', rt === pt, ct + ' → ' + rt);
+  } catch (e) { add('reciprocity (rings+plugs)', false, String(e)); }
+
+  // (c) never self-encrypts, 200 random letters
+  try {
+    const m = new Enigma(['II','V','III'], 'B', 'GJC', 'QEV', 'AZ BY CX DW EV FU');
+    let ok = true, badAt = -1;
+    for (let i = 0; i < 200; i++) {
+      const c = Math.floor(Math.random() * 26);
+      if (m.press(c).out === c) { ok = false; badAt = i; break; }
+    }
+    add('no self-encryption ×200', ok, ok ? 'all distinct' : 'self-map at i=' + badAt);
+  } catch (e) { add('no self-encryption ×200', false, String(e)); }
+
+  // (d) double-stepping ADU→ADV→AEW→BFX
+  try {
+    const m = new Enigma(['I','II','III'], 'B', 'AAA', 'ADU', '');
+    const seq = [m.positions()];
+    for (let i = 0; i < 3; i++) { m.press(0); seq.push(m.positions()); }
+    const want = ['ADU','ADV','AEW','BFX'];
+    add('double-step ADU→ADV→AEW→BFX', seq.join(',') === want.join(','), seq.join(' → '));
+  } catch (e) { add('double-step', false, String(e)); }
+
+  const allPass = results.every(r => r.ok);
+  const banner = document.createElement('div');
+  banner.className = 'test-banner ' + (allPass ? 'pass' : 'fail');
+  banner.id = 'testBanner';
+  banner.innerHTML =
+    `<strong>TESTS: ${allPass ? 'PASS' : 'FAIL'}</strong><ul>` +
+    results.map(r => `<li>${r.ok ? '✓' : '✗'} ${r.name} — ${r.detail}</li>`).join('') +
+    '</ul>';
+  $('testHost').appendChild(banner);
+}
+
+initUI();
+if (/[?&]test\b/.test(location.search)) runSelfTests();
+if (/[?&]debug\b/.test(location.search)) {
+  window.addEventListener('load', () => {
+    const dw = document.documentElement.clientWidth;
+    const bad = [...document.querySelectorAll('*')].filter(el => el.getBoundingClientRect().right > dw + 1)
+      .map(el => `${el.tagName}.${el.className} r=${Math.round(el.getBoundingClientRect().right)} w=${Math.round(el.getBoundingClientRect().width)}`);
+    const d = document.createElement('pre');
+    d.id = 'debugOut';
+    d.textContent = 'DOCW=' + dw + ' SCROLLW=' + document.documentElement.scrollWidth + '\n' + bad.slice(0, 40).join('\n');
+    document.body.prepend(d);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>notepad ideas since 2018</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #171a21;
+    --text: #e8e6e1;
+    --muted: #8b8fa3;
+    --accent: #e0b354;
+    --border: #262a35;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+  }
+  main { width: 100%; max-width: 640px; }
+  h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; }
+  .sub { color: var(--muted); margin: 0.5rem 0 2.25rem; font-size: 0.9rem; line-height: 1.5; }
+  ul { list-style: none; display: grid; gap: 0.9rem; }
+  a.card {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  a.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  a.card .name { color: var(--accent); font-weight: 600; }
+  a.card .desc { color: var(--muted); font-size: 0.85rem; margin-top: 0.35rem; line-height: 1.5; }
+  footer { margin-top: 2.5rem; color: var(--muted); font-size: 0.78rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>notepad ideas since 2018</h1>
+  <p class="sub">little things scribbled in a notepad over the years, finally built.</p>
+  <ul>
+    <li>
+      <a class="card" href="disaster-history/">
+        <div class="name">a century of disasters</div>
+        <div class="desc">125 years of the world's disasters — natural and man-made — visualized. how deaths fell 46× as warning technology arrived, what kills by era, and 5,393 NASA-tracked events drawing the world map by themselves.</div>
+      </a>
+    </li>
+    <li>
+      <a class="card" href="password-generator/">
+        <div class="name">password generator</div>
+        <div class="desc">random passwords your way — pick length, digits, letters, symbols. cryptographically random, runs entirely in your browser.</div>
+      </a>
+    </li>
+    <li>
+      <a class="card" href="enigma/">
+        <div class="name">die enigma</div>
+        <div class="desc">a working digital Enigma machine — type and watch the rotors turn. plus the history, how it was broken, the movie, and the algorithm explained.</div>
+      </a>
+    </li>
+  </ul>
+  <footer>built one idea at a time · <a href="https://github.com/vaibhavgit9210/notepad-ideas-since-2018" style="color:var(--muted)">source</a></footer>
+</main>
+</body>
+</html>
