@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
-<title>A Century of Disasters — 1900–2025</title>
+<title>A Century of Disasters · 1900-2025</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23060a13'/%3E%3Ctext x='32' y='46' font-size='38' text-anchor='middle'%3E%F0%9F%8C%8B%3C/text%3E%3C/svg%3E">
 <style>
   :root {
@@ -163,7 +163,7 @@
   <header class="top">
     <div>
       <h1>A Century of Disasters</h1>
-      <p class="sub">125 years of the world's disasters — natural and man-made — and what the data says
+      <p class="sub">125 years of the world's disasters, natural and man-made, and what the data says
       about the link between <strong>technology and staying alive</strong>. Built on
       <a href="https://ourworldindata.org/natural-disasters" target="_blank" rel="noopener">EM-DAT via Our World in Data</a>
       plus a hand-curated event catalog.</p>
@@ -176,10 +176,10 @@
   <section>
     <div class="kicker">01 · The raw record</div>
     <h2>Deaths from natural disasters, year by year</h2>
-    <p class="lede">Every year since 1900, on a log scale — a flood year in the 1930s killed
+    <p class="lede">Every year since 1900, on a log scale: a flood year in the 1930s killed
     a thousand times more people than a bad year does now. Hover for the breakdown; the spikes are named.</p>
     <div class="card">
-      <h3>Global deaths from natural disasters per year, 1900–2025</h3>
+      <h3>Global deaths from natural disasters per year, 1900-2025</h3>
       <div class="note">Log scale. Source: EM-DAT via Our World in Data.</div>
       <div class="chart" id="chartYearly"></div>
       <details class="tbl"><summary>Table view</summary><div class="scroller" id="tblYearly"></div></details>
@@ -190,17 +190,17 @@
     <div class="kicker">02 · The technology link</div>
     <h2>Deaths collapsed as warning technology arrived</h2>
     <p class="lede">Adjusted for population, dying in a disaster is about <strong>46× less likely</strong> than in the
-    1920s. The diamonds under the bars are the technologies and institutions that did it — hover each one.
+    1920s. The diamonds under the bars are the technologies and institutions that did it. Hover each one.
     Meanwhile the number of <em>recorded</em> disasters went up, not down.</p>
     <div class="card">
-      <h3>Disaster deaths per 100,000 people — decade average</h3>
+      <h3>Disaster deaths per 100,000 people, decade average</h3>
       <div class="note">Deaths ÷ world population, per year, averaged by decade. Diamonds: warning &amp; safety milestones.</div>
       <div class="chart" id="chartRate"></div>
       <details class="tbl"><summary>Table view (rate + milestones)</summary><div class="scroller" id="tblRate"></div></details>
     </div>
     <div class="card">
       <h3>Disasters recorded per year</h3>
-      <div class="note">More satellites, sensors and reporting — and a warming climate — mean far more events enter the record. More disasters seen, fewer people dead.</div>
+      <div class="note">More satellites, sensors and reporting, and a warming climate, mean far more events enter the record. More disasters seen, fewer people dead.</div>
       <div class="chart" id="chartEvents"></div>
       <details class="tbl"><summary>Table view</summary><div class="scroller" id="tblEvents"></div></details>
     </div>
@@ -209,7 +209,7 @@
   <section>
     <div class="kicker">03 · What kills, by era</div>
     <h2>The killers changed</h2>
-    <p class="lede">Early-century mega-deaths came from floods and droughts — famine-scale events that modern
+    <p class="lede">Early-century mega-deaths came from floods and droughts: famine-scale events that modern
     logistics and forecasting ended. Earthquakes never went away, and extreme temperature is the one that's growing.</p>
     <div class="card">
       <h3>Average annual deaths by disaster type, per decade</h3>
@@ -223,30 +223,30 @@
   <section>
     <div class="kicker">04 · Event explorer</div>
     <h2>Major disasters, one by one</h2>
-    <p class="lede">A curated catalog of the century's major disasters — natural, man-made, and the messy
+    <p class="lede">A curated catalog of the century's major disasters: natural, man-made, and the messy
     in-between (dam failures in storms, policy famines, neglected defenses). Log scale; every dot is an event.
     Hover or tab to a dot for the story.</p>
     <div class="filters" id="expFilters"></div>
     <div class="card">
       <h3>Deaths per event vs. year</h3>
-      <div class="note">Death tolls are best estimates — many are disputed; ranges noted per event. Curated from public records (Wikipedia, EM-DAT, NOAA).</div>
+      <div class="note">Death tolls are best estimates. Many are disputed; ranges noted per event. Curated from public records (Wikipedia, EM-DAT, NOAA).</div>
       <div class="chart" id="chartScatter"></div>
       <div class="legend" id="legScatter"></div>
-      <details class="tbl" open><summary>Table view — filtered events</summary><div class="scroller" id="tblEventsList"></div></details>
+      <details class="tbl" open><summary>Table view: filtered events</summary><div class="scroller" id="tblEventsList"></div></details>
     </div>
   </section>
 
   <section>
     <div class="kicker">05 · The satellite view</div>
     <h2>What the satellites are watching</h2>
-    <p class="lede">Every open event in NASA's EONET tracker — no basemap needed; the disasters draw the
+    <p class="lede">Every open event in NASA's EONET tracker, no basemap needed; the disasters draw the
     continents themselves. This is what "we see more disasters than ever" looks like: one agency's satellite
     feed logs thousands of events a year, most of which would never have entered a 1950s record.</p>
     <div class="card">
-      <h3>5,393 events tracked by NASA EONET, 2002–2025</h3>
+      <h3>5,393 events tracked by NASA EONET, 2002-2025</h3>
       <div class="note" id="eonetNote"></div>
       <div class="chart" id="chartMap" style="position:relative"></div>
-      <details class="tbl"><summary>Table view — counts by category and year</summary><div class="scroller" id="tblMap"></div></details>
+      <details class="tbl"><summary>Table view: counts by category and year</summary><div class="scroller" id="tblMap"></div></details>
     </div>
   </section>
 
@@ -257,14 +257,14 @@
   </section>
 
   <footer>
-    <p><strong>Sources.</strong> Aggregate series: <a href="https://ourworldindata.org/natural-disasters" target="_blank" rel="noopener">Our World in Data — Natural Disasters</a>
+    <p><strong>Sources.</strong> Aggregate series: <a href="https://ourworldindata.org/natural-disasters" target="_blank" rel="noopener">Our World in Data · Natural Disasters</a>
     (underlying data EM-DAT, CRED / UCLouvain), CC BY. Satellite events: NASA EONET via the
     <a href="https://www.kaggle.com/datasets/shreyanshdangi/global-natural-calamities-dataset" target="_blank" rel="noopener">Global Natural Calamities Dataset</a>
     on Kaggle (CC0). Per-event catalog: hand-curated from public
     records; death tolls are best estimates and several (1931 China floods, Banqiao, the famines) are disputed by
     an order of magnitude. Population denominators: UN estimates by decade.</p>
     <p style="margin-top:8px"><strong>Scope.</strong> Wars are excluded. Epidemics and famines are included where
-    EM-DAT-style catalogs include them — they are the century's biggest killers and the clearest proof that
+    EM-DAT-style catalogs include them; they are the century's biggest killers and the clearest proof that
     "disaster" is often a policy outcome, not just weather.</p>
     <p style="margin-top:8px">Idea #1 from a 2018 college notepad · built 2026 ·
     <a href="https://github.com/vaibhavgit9210/notepad-ideas-since-2018" target="_blank" rel="noopener">source</a></p>
@@ -284,19 +284,19 @@ const TYPE_VARS = ['--s1','--s2','--s3','--s4','--s5','--s6','--s7','--s8'];
 
 /* Warning & safety milestones — the technology layer */
 const MILESTONES = [
-  [1901,'Transatlantic radio','Marconi’s first transatlantic signal — ships and coasts can finally call for help.'],
+  [1901,'Transatlantic radio','Marconi’s first transatlantic signal: ships and coasts can finally call for help.'],
   [1906,'SOS distress signal','A single worldwide radio distress standard is adopted.'],
   [1914,'SOLAS convention','After the Titanic: lifeboats for all, 24-hour radio watch at sea.'],
-  [1935,'Richter scale','Earthquakes get a measurable size — the start of quantitative seismology.'],
+  [1935,'Richter scale','Earthquakes get a measurable size, the start of quantitative seismology.'],
   [1944,'Hurricane hunter flights','Routine aircraft reconnaissance into Atlantic hurricanes begins.'],
   [1950,'First computer forecast','ENIAC runs the first numerical weather prediction.'],
   [1953,'Delta Works era','North Sea flood (2,551 dead) triggers the Dutch Delta Works and modern storm-surge defense.'],
-  [1960,'First weather satellite','TIROS-1 launches — cyclones can no longer approach unseen.'],
+  [1960,'First weather satellite','TIROS-1 launches: cyclones can no longer approach unseen.'],
   [1961,'Japan disaster law','Typhoon Vera (5,000 dead) produces Japan’s Disaster Countermeasures Basic Act.'],
   [1963,'World Weather Watch','WMO links every nation’s observations into one global system.'],
   [1972,'Bangladesh cyclone programme','After Bhola’s ~500,000 dead: shelters + 50,000 volunteers. Deaths fall 100× over 40 years.'],
   [1975,'Geostationary satellites','GOES-1: continuous, always-on storm watching.'],
-  [1985,'Famine early warning','FEWS NET founded after the Ethiopian famine — satellites watch crops, not just storms.'],
+  [1985,'Famine early warning','FEWS NET founded after the Ethiopian famine: satellites watch crops, not just storms.'],
   [1991,'Pinatubo forecast','Volcanologists call the eruption days ahead; ~60,000 evacuated, thousands saved.'],
   [2006,'Ocean tsunami warning','Indian Ocean Tsunami Warning System goes live, 18 months after the 2004 tsunami.'],
   [2007,'Earthquake early warning','Japan switches on nationwide seconds-ahead quake alerts.'],
@@ -314,16 +314,16 @@ const EVENTS = [
   [1908,'Messina earthquake','Italy','Earthquake & tsunami','n',82000,'Europe’s deadliest earthquake.'],
   [1912,'Titanic sinking','North Atlantic','Transport','m',1500,'Led directly to the SOLAS safety-at-sea convention.'],
   [1917,'Halifax explosion','Canada','Industrial & explosion','m',1900,'Munitions-ship collision; largest pre-nuclear man-made blast.'],
-  [1918,'Influenza pandemic','Worldwide','Epidemic','n',50000000,'Estimates 17–100M. Killed more than WWI.'],
+  [1918,'Influenza pandemic','Worldwide','Epidemic','n',50000000,'Estimates 17-100M. Killed more than WWI.'],
   [1920,'Haiyuan earthquake','China','Earthquake & tsunami','n',273000,'Landslides buried entire loess villages.'],
   [1921,'Oppau explosion','Germany','Industrial & explosion','m',560,'Fertilizer-plant blast heard 300 km away.'],
   [1923,'Great Kantō earthquake','Japan','Earthquake & tsunami','n',105000,'Firestorms in Tokyo and Yokohama.'],
   [1927,'Gulang earthquake','China','Earthquake & tsunami','n',41000,''],
   [1928,'Okeechobee hurricane','US / Caribbean','Storm & flood','n',4000,'Lake levee failure drowned farm workers.'],
-  [1931,'Yangtze–Huai floods','China','Storm & flood','n',2000000,'Estimates 400k–4M. Deadliest flood ever recorded.'],
+  [1931,'Yangtze-Huai floods','China','Storm & flood','n',2000000,'Estimates 400k-4M. Deadliest flood ever recorded.'],
   [1935,'Yangtze flood','China','Storm & flood','n',145000,''],
   [1935,'Quetta earthquake','British India','Earthquake & tsunami','n',40000,''],
-  [1938,'Yellow River flood','China','Dam & levee','m',500000,'Dikes deliberately breached to halt an army — a weaponized flood.'],
+  [1938,'Yellow River flood','China','Dam & levee','m',500000,'Dikes deliberately breached to halt an army: a weaponized flood.'],
   [1939,'Erzincan earthquake','Turkey','Earthquake & tsunami','n',33000,''],
   [1942,'Benxihu colliery disaster','China','Industrial & explosion','m',1549,'Worst mining disaster in history.'],
   [1943,'Bengal famine','British India','Drought & famine','x',3000000,'Cyclone + crop disease + wartime policy failure.'],
@@ -337,7 +337,7 @@ const EVENTS = [
   [1957,'Kyshtym nuclear accident','USSR','Nuclear','m',200,'Hidden for 30 years; toll still uncertain.'],
   [1959,'Typhoon Vera','Japan','Storm & flood','n',5000,'Japan’s worst typhoon; reshaped its disaster law.'],
   [1960,'Valdivia earthquake','Chile','Earthquake & tsunami','n',5700,'Strongest quake ever recorded (M9.5).'],
-  [1960,'Great Chinese Famine','China','Drought & famine','m',30000000,'1959–61. Estimates 15–55M; driven by Great Leap Forward policy.'],
+  [1960,'Great Chinese Famine','China','Drought & famine','m',30000000,'1959-61. Estimates 15-55M; driven by Great Leap Forward policy.'],
   [1963,'Vajont Dam disaster','Italy','Dam & levee','m',2000,'Landslide into reservoir; engineers ignored warnings.'],
   [1966,'Aberfan colliery slide','Wales','Landslide','m',144,'Spoil tip buried a school; 116 children.'],
   [1970,'Bhola cyclone','East Pakistan','Storm & flood','n',500000,'Deadliest cyclone ever; no warning reached the coast.'],
@@ -348,7 +348,7 @@ const EVENTS = [
   [1976,'Guatemala earthquake','Guatemala','Earthquake & tsunami','n',23000,''],
   [1977,'Andhra Pradesh cyclone','India','Storm & flood','n',10000,''],
   [1984,'Bhopal gas leak','India','Industrial & explosion','m',16000,'Worst industrial disaster; ~3,800 immediate, thousands after.'],
-  [1984,'Ethiopian famine','Ethiopia','Drought & famine','x',400000,'1983–85. Drought + civil war + policy.'],
+  [1984,'Ethiopian famine','Ethiopia','Drought & famine','x',400000,'1983-85. Drought + civil war + policy.'],
   [1985,'Mexico City earthquake','Mexico','Earthquake & tsunami','n',10000,''],
   [1985,'Nevado del Ruiz lahar','Colombia','Volcanic','n',23000,'Armero: warnings existed but never reached the town.'],
   [1986,'Chernobyl','USSR','Nuclear','m',4000,'WHO long-term estimate; 31 direct deaths.'],
@@ -357,25 +357,25 @@ const EVENTS = [
   [1988,'Spitak earthquake','Armenia','Earthquake & tsunami','n',25000,'Soviet-era buildings collapsed wholesale.'],
   [1988,'Piper Alpha','United Kingdom','Industrial & explosion','m',167,'Rewrote offshore-platform safety.'],
   [1989,'Ufa train disaster','USSR','Transport','m',575,'Gas-pipeline leak ignited by two passing trains.'],
-  [1990,'Manjil–Rudbar earthquake','Iran','Earthquake & tsunami','n',40000,''],
-  [1991,'Bangladesh cyclone','Bangladesh','Storm & flood','n',138000,'Same coast as Bhola — shelters cut deaths by ~70%.'],
+  [1990,'Manjil-Rudbar earthquake','Iran','Earthquake & tsunami','n',40000,''],
+  [1991,'Bangladesh cyclone','Bangladesh','Storm & flood','n',138000,'Same coast as Bhola. Shelters cut deaths by ~70%.'],
   [1991,'Mount Pinatubo','Philippines','Volcanic','n',847,'Forecast days ahead; ~60,000 evacuated. A warning-system triumph.'],
   [1994,'MS Estonia sinking','Baltic Sea','Transport','m',852,''],
   [1995,'Kobe earthquake','Japan','Earthquake & tsunami','n',6400,''],
   [1998,'Hurricane Mitch','Central America','Storm & flood','n',11000,''],
-  [1998,'Yangtze floods','China','Storm & flood','n',3700,'Same river as 1931 — 500× fewer deaths.'],
+  [1998,'Yangtze floods','China','Storm & flood','n',3700,'Same river as 1931, 500× fewer deaths.'],
   [1999,'İzmit earthquake','Turkey','Earthquake & tsunami','n',17000,''],
-  [1999,'Vargas mudslides','Venezuela','Landslide','n',15000,'Estimates 10–30k.'],
+  [1999,'Vargas mudslides','Venezuela','Landslide','n',15000,'Estimates 10-30k.'],
   [1999,'Odisha cyclone','India','Storm & flood','n',9800,'India’s wake-up call; next Odisha super-cyclone killed <50.'],
   [2001,'September 11 attacks','United States','Conflict & terror','m',2996,''],
-  [2003,'European heat wave','Europe','Heat & cold','n',70000,'Europe’s deadliest modern disaster — and barely visible at the time.'],
+  [2003,'European heat wave','Europe','Heat & cold','n',70000,'Europe’s deadliest modern disaster, and barely visible at the time.'],
   [2003,'Bam earthquake','Iran','Earthquake & tsunami','n',26000,'Mud-brick city collapsed.'],
   [2004,'Indian Ocean tsunami','14 countries','Earthquake & tsunami','n',227000,'No warning system existed in the Indian Ocean. One was live by 2006.'],
   [2005,'Kashmir earthquake','Pakistan','Earthquake & tsunami','n',87000,''],
-  [2005,'Hurricane Katrina','United States','Storm & flood','x',1800,'Storm + levee failure — engineering, not just weather.'],
+  [2005,'Hurricane Katrina','United States','Storm & flood','x',1800,'Storm + levee failure: engineering, not just weather.'],
   [2008,'Cyclone Nargis','Myanmar','Storm & flood','n',138000,'Warnings existed but evacuation never happened.'],
   [2008,'Sichuan earthquake','China','Earthquake & tsunami','n',87000,'School collapses drove building-code reform.'],
-  [2010,'Haiti earthquake','Haiti','Earthquake & tsunami','n',220000,'Estimates 100–316k. Same magnitude killed ~500 in well-built Chile weeks later.'],
+  [2010,'Haiti earthquake','Haiti','Earthquake & tsunami','n',220000,'Estimates 100-316k. Same magnitude killed ~500 in well-built Chile weeks later.'],
   [2010,'Russian heat wave','Russia','Heat & cold','n',56000,''],
   [2011,'Tōhoku earthquake & tsunami','Japan','Earthquake & tsunami','n',19700,'Seconds-ahead alerts worked; the sea wall assumptions did not.'],
   [2011,'Fukushima Daiichi accident','Japan','Nuclear','x',2300,'Tsunami-triggered; toll is mostly evacuation-related deaths.'],
@@ -386,14 +386,14 @@ const EVENTS = [
   [2015,'Mina stampede','Saudi Arabia','Crowd & structural','m',2400,'Hajj crowd crush; estimates vary.'],
   [2017,'Grenfell Tower fire','United Kingdom','Crowd & structural','m',72,'Flammable cladding; a regulation failure.'],
   [2018,'Sulawesi earthquake & tsunami','Indonesia','Earthquake & tsunami','n',4300,'Soil liquefaction swallowed neighborhoods.'],
-  [2019,'Australian bushfires','Australia','Wildfire','n',34,'“Black Summer” 2019–20; ~450 more from smoke. 3 billion animals affected.'],
+  [2019,'Australian bushfires','Australia','Wildfire','n',34,'“Black Summer” 2019-20; ~450 more from smoke. 3 billion animals affected.'],
   [2020,'COVID-19 pandemic','Worldwide','Epidemic','n',7000000,'Reported deaths; WHO excess-mortality estimate ~15M.'],
   [2020,'Beirut port explosion','Lebanon','Industrial & explosion','m',218,'2,750 t of ammonium nitrate stored for 6 years.'],
   [2021,'European floods','Germany / Belgium','Storm & flood','n',240,'Forecasts were accurate; last-mile warnings failed.'],
   [2022,'Pakistan floods','Pakistan','Storm & flood','n',1700,'A third of the country underwater; 33M affected.'],
   [2022,'Itaewon crowd crush','South Korea','Crowd & structural','m',159,''],
-  [2023,'Türkiye–Syria earthquakes','Türkiye / Syria','Earthquake & tsunami','n',59000,'Amnestied building-code violations collapsed.'],
-  [2023,'Storm Daniel — Derna','Libya','Dam & levee','x',6000,'Two neglected dams burst; estimates to 11k. Weather + decayed infrastructure.'],
+  [2023,'Türkiye-Syria earthquakes','Türkiye / Syria','Earthquake & tsunami','n',59000,'Amnestied building-code violations collapsed.'],
+  [2023,'Storm Daniel, Derna','Libya','Dam & levee','x',6000,'Two neglected dams burst; estimates to 11k. Weather + decayed infrastructure.'],
   [2023,'Morocco earthquake','Morocco','Earthquake & tsunami','n',2900,''],
   [2024,'Valencia flash floods','Spain','Storm & flood','n',230,'Alerts sent hours after streets flooded.'],
   [2025,'Myanmar earthquake','Myanmar','Earthquake & tsunami','n',3700,''],
@@ -402,12 +402,12 @@ const EVENTS = [
 const CATS = { n:['Natural','--nat'], m:['Man-made','--man'], x:['Mixed','--mix'] };
 
 const INSIGHTS = [
-  ['Famine-scale death is gone','The pre-1965 record is dominated by floods and droughts that killed by starvation — 1931 China (~2M), the Great Chinese Famine (~30M). After the green revolution, global food logistics and famine early warning, no flood or drought has come within 1% of those tolls.'],
-  ['46× safer, 60× more disasters','Per person, disaster death fell ~46× since the 1920s — while recorded disasters per year rose from a handful to ~400. Satellites and sensors see far more events; warnings mean far fewer of them kill. More disasters, fewer dead.'],
-  ['Warnings compound: the Bangladesh curve','One coastline, three cyclones: Bhola 1970, ~500,000 dead. 1991, after shelters and volunteers: 138,000. Sidr 2007, with modern forecasting: ~3,400. Same geography, ~150× improvement — all of it technology and institutions.'],
+  ['Famine-scale death is gone','The pre-1965 record is dominated by floods and droughts that killed by starvation: 1931 China (~2M), the Great Chinese Famine (~30M). After the green revolution, global food logistics and famine early warning, no flood or drought has come within 1% of those tolls.'],
+  ['46× safer, 60× more disasters','Per person, disaster death fell ~46× since the 1920s, while recorded disasters per year rose from a handful to ~400. Satellites and sensors see far more events; warnings mean far fewer of them kill. More disasters, fewer dead.'],
+  ['Warnings compound: the Bangladesh curve','One coastline, three cyclones: Bhola 1970, ~500,000 dead. 1991, after shelters and volunteers: 138,000. Sidr 2007, with modern forecasting: ~3,400. Same geography, ~150× improvement: all of it technology and institutions.'],
   ['Earthquakes are the stubborn killer','Quakes can’t be forecast, so deaths track building quality, not decade. Haiti 2010 (~220k) vs Chile’s stronger quake weeks later (~500). Türkiye 2023 died by amnestied code violations. The fix is boring: concrete, rebar, enforcement.'],
   ['Man-made mega-death is policy, not accidents','Industrial accidents are small next to decisions: Bhopal ~16k vs the 1938 weaponized Yellow River flood (~500k) or the policy famines (millions). The deadliest “man-made disasters” were made with signatures, not sparks.'],
-  ['The next curve to bend: heat','Extreme temperature barely registers before 2000, then: Europe 2003 (~70k), Russia 2010 (~56k), and rising 2020s tolls. It’s now the largest killer in the recent data — the one disaster type still getting worse.'],
+  ['The next curve to bend: heat','Extreme temperature barely registers before 2000, then: Europe 2003 (~70k), Russia 2010 (~56k), and rising 2020s tolls. It’s now the largest killer in the recent data, the one disaster type still getting worse.'],
 ];
 
 /* ============ helpers ============ */
@@ -473,9 +473,9 @@ function buildTable(container, headers, rows, numCols) {
   const evNow = Math.round(OWID.events.slice(-10).reduce((a,b)=>a+b,0)/10);
   const tiles = [
     ['Deaths recorded since 1900', fmt(total), 'natural disasters, EM-DAT record'],
-    ['Deadliest year: ' + OWID.years[maxI], fmt(OWID.deathsAll[maxI]), 'the China floods — worst flood in history'],
+    ['Deadliest year: ' + OWID.years[maxI], fmt(OWID.deathsAll[maxI]), 'the China floods, worst flood in history'],
     ['Fall in death rate', '46×', 'per 100k people, 1920s → 2020s'],
-    ['Disasters recorded per year', '~' + evNow, 'vs ~10/yr in 1900 — we see more, lose fewer'],
+    ['Disasters recorded per year', '~' + evNow, 'vs ~10/yr in 1900: we see more, lose fewer'],
   ];
   const root = $('#kpis');
   tiles.forEach(([l, v, c]) => {
@@ -610,7 +610,7 @@ function chartRate() {
   /* milestone band */
   const by0 = f.M.t + f.ih + 30;
   el('text', { x: f.M.l, y: by0 + 10, 'font-size': 11, 'font-weight': 600, fill: 'var(--muted)' }, f.svg)
-    .textContent = 'WARNING & SAFETY MILESTONES — hover';
+    .textContent = 'WARNING & SAFETY MILESTONES · hover';
   MILESTONES.forEach(([yr, name, note], i) => {
     const px = x(yr), py = by0 + 26 + (i % 2) * 16;
     const dia = el('path', { d: `M${px},${py-5} L${px+5},${py} L${px},${py+5} L${px-5},${py} Z`, fill: 'var(--s7)', tabindex: 0, class: 'mark-focus' }, f.svg);
@@ -618,7 +618,7 @@ function chartRate() {
     const show = ev => {
       const cx2 = ev.clientX !== undefined ? ev.clientX : innerWidth/2;
       const cy2 = ev.clientY !== undefined ? ev.clientY : innerHeight/2;
-      tipShow(cx2, cy2, t => { tTitle(t, yr + ' — ' + name); tNote(t, note); });
+      tipShow(cx2, cy2, t => { tTitle(t, yr + ' · ' + name); tNote(t, note); });
     };
     for (const target of [dia, hit2]) {
       target.addEventListener('pointermove', show);
@@ -711,7 +711,7 @@ function chartStack() {
       const cx2 = ev.clientX !== undefined ? ev.clientX : innerWidth/2;
       const cy2 = ev.clientY !== undefined ? ev.clientY : innerHeight/2;
       tipShow(cx2, cy2, t => {
-        tTitle(t, dec + 's — avg deaths per year');
+        tTitle(t, dec + 's · avg deaths per year');
         tRow(t, null, 'all disasters', fmtFull(OWID.decAll[i]));
         OWID.types.map((_, k) => [k, OWID.decDeaths[k][i]]).filter(p => p[1] > 0).sort((a,b) => b[1]-a[1])
           .forEach(([k, v]) => tRow(t, TYPE_VARS[k], TYPE_LABELS[k].toLowerCase(), fmtFull(v)));
@@ -787,7 +787,7 @@ function chartScatter() {
       const px = ev.clientX !== undefined ? ev.clientX : innerWidth/2;
       const py = ev.clientY !== undefined ? ev.clientY : innerHeight/2;
       tipShow(px, py, t => {
-        tTitle(t, yr + ' — ' + name);
+        tTitle(t, yr + ' · ' + name);
         tRow(t, CATS[cat][1], CATS[cat][0].toLowerCase() + ' · ' + type.toLowerCase(), '≈' + fmt(deaths) + ' deaths');
         tRow(t, null, country, '');
         tNote(t, note);
@@ -862,9 +862,9 @@ function chartMap() {
 
   const counts = [0,0,0,0];
   EONET.forEach(e => counts[e[2]]++);
-  $('#eonetNote').textContent = 'One dot per event — ' +
+  $('#eonetNote').textContent = 'One dot per event: ' +
     counts.map((c, i) => c.toLocaleString() + ' ' + EONET_CATS[i].toLowerCase()).join(' · ') +
-    '. Hover any dot. Equirectangular; the record skews to 2024–25 open events.';
+    '. Hover any dot. Equirectangular; the record skews to 2024-25 open events.';
 
   const byYear = {};
   EONET.forEach(e => {

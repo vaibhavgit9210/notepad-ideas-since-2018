@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0c0d10">
-<title>Die Enigma — an interactive cipher machine</title>
+<title>Die Enigma · an interactive cipher machine</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23060a13'/%3E%3Ctext x='32' y='46' font-size='38' text-anchor='middle'%3E%F0%9F%94%90%3C/text%3E%3C/svg%3E">
 <style>
   :root{
@@ -266,9 +266,9 @@
 <div id="testHost"></div>
 
 <header>
-  <div class="eyebrow">1918 · Berlin — 1945 · Bletchley Park</div>
+  <div class="eyebrow">1918 · Berlin - 1945 · Bletchley Park</div>
   <h1 class="title">DIE&nbsp;ENIGMA</h1>
-  <p class="tagline">A working replica of the German cipher machine that guarded the Wehrmacht's secrets — and the story of the mathematicians who <em>broke the unbreakable</em>. Type below. Every key you press turns the rotors, just like in 1940.</p>
+  <p class="tagline">A working replica of the German cipher machine that guarded the Wehrmacht's secrets, and the story of the mathematicians who <em>broke the unbreakable</em>. Type below. Every key you press turns the rotors, just like in 1940.</p>
 </header>
 
 <!-- ================= THE MACHINE ================= -->
@@ -287,13 +287,13 @@
 
     <!-- lampboard -->
     <div class="board">
-      <div class="glabel">Lampenfeld <span class="en">lampboard — the ciphered letter lights up</span></div>
+      <div class="glabel">Lampenfeld <span class="en">lampboard: the ciphered letter lights up</span></div>
       <div id="lampboard"></div>
     </div>
 
     <!-- keyboard -->
     <div class="board">
-      <div class="glabel">Tastatur <span class="en">keyboard — click, tap, or type</span></div>
+      <div class="glabel">Tastatur <span class="en">keyboard: click, tap, or type</span></div>
       <div id="keyboard"></div>
     </div>
 
@@ -305,12 +305,12 @@
       </div>
       <div class="tape out">
         <div class="glabel">Geheimtext <span class="en">output</span></div>
-        <div class="txt" id="tapeOut"><span class="ph">—</span></div>
+        <div class="txt" id="tapeOut"><span class="ph">-</span></div>
       </div>
     </div>
 
     <div class="toolbar">
-      <button class="btn" id="resetBtn">⟲ ZURÜCKSETZEN — RESET</button>
+      <button class="btn" id="resetBtn">⟲ ZURÜCKSETZEN · RESET</button>
       <span class="hint-type" id="hintType">tip: type on your physical keyboard</span>
     </div>
 
@@ -323,7 +323,7 @@
 
     <!-- plugboard -->
     <div class="plugboard">
-      <div class="glabel">Steckerbrett <span class="en">plugboard — click two letters to connect a cable</span></div>
+      <div class="glabel">Steckerbrett <span class="en">plugboard: click two letters to connect a cable</span></div>
       <div id="plugboardEl"></div>
       <div class="plug-note" id="plugNote">No cables connected. A real operator plugged in ten pairs.</div>
     </div>
@@ -335,35 +335,35 @@
 
   <section id="history">
     <h2><span class="sub">Die Geschichte · the history</span>A radio problem, a Berlin engineer, and total confidence</h2>
-    <p>Radio changed war before Enigma did. By 1918 every army broadcast its orders into the open air, where anyone with an antenna could copy them down. The German electrical engineer <strong>Arthur Scherbius</strong> patented his answer that year: a typewriter-sized machine that scrambled each letter through a stack of rotating, wired wheels. He called it <em>Enigma</em> and sold it commercially in the 1920s to banks and businesses — with modest success at best.</p>
-    <p>The military was the customer that mattered. The <strong>Reichsmarine adopted a modified Enigma in 1926</strong>, the army followed in 1928, and by the mid-1930s the rebuilt Wehrmacht had made the <strong>Enigma I</strong> — three rotors chosen from five, a reflector, and a front-panel plugboard — the standard cipher machine of a nation preparing for war. Scherbius never saw it: he died in 1929 after a carriage accident.</p>
-    <p>Why did Germany trust it so completely? Do the arithmetic and you'll sympathize. The daily key — which rotors, in what order, at which ring settings, with which ten plugboard cables — could be chosen in roughly <strong>159 quintillion ways</strong>. Testing every setting by hand, even at one per second, would take longer than the age of the universe. German cryptographers concluded that no enemy could ever search that space, and for the entire war most of them never seriously doubted it. Their mistake was subtle: the machine's <em>mathematics</em> leaked patterns that made searching the whole space unnecessary.</p>
+    <p>Radio changed war before Enigma did. By 1918 every army broadcast its orders into the open air, where anyone with an antenna could copy them down. The German electrical engineer <strong>Arthur Scherbius</strong> patented his answer that year: a typewriter-sized machine that scrambled each letter through a stack of rotating, wired wheels. He called it <em>Enigma</em> and sold it commercially in the 1920s to banks and businesses, with modest success at best.</p>
+    <p>The military was the customer that mattered. The <strong>Reichsmarine adopted a modified Enigma in 1926</strong>, the army followed in 1928, and by the mid-1930s the rebuilt Wehrmacht had made the <strong>Enigma I</strong> (three rotors chosen from five, a reflector, and a front-panel plugboard) the standard cipher machine of a nation preparing for war. Scherbius never saw it: he died in 1929 after a carriage accident.</p>
+    <p>Why did Germany trust it so completely? Do the arithmetic and you'll sympathize. The daily key (which rotors, in what order, at which ring settings, with which ten plugboard cables) could be chosen in roughly <strong>159 quintillion ways</strong>. Testing every setting by hand, even at one per second, would take longer than the age of the universe. German cryptographers concluded that no enemy could ever search that space, and for the entire war most of them never seriously doubted it. Their mistake was subtle: the machine's <em>mathematics</em> leaked patterns that made searching the whole space unnecessary.</p>
   </section>
 
   <section id="breaking">
     <h2><span class="sub">Die Entzifferung · the breaking</span>Three Polish mathematicians, then ten thousand people at Bletchley</h2>
-    <p>The first crack came not from Britain but from <strong>Poland</strong> — a country that, squeezed between Germany and the USSR, could not afford to be blind. In 1932 the Polish Cipher Bureau handed the Enigma problem to three young mathematicians: <strong>Marian Rejewski, Jerzy Różycki, and Henryk Zygalski</strong>. Armed with permutation theory and setting sheets bought from a German spy by French intelligence, Rejewski achieved something astonishing: he <strong>reconstructed the secret internal wiring of the rotors by pure mathematics</strong>, without ever seeing a military machine. The Poles then read German traffic for most of the 1930s, inventing the <em>Zygalski sheets</em> and an electromechanical search machine they named the <strong>bomba</strong>.</p>
-    <p>By 1938 Germany kept adding rotors and cables, and Poland was running out of money and time. So in <strong>July 1939, weeks before the invasion</strong>, the Poles summoned French and British cryptologists to a secret meeting in the Kabaty woods near Warsaw and gave away everything — the theory, the methods, and working Enigma replicas. It is one of the great acts of intellectual generosity in history, and it saved the Allies years.</p>
-    <p>The inheritance landed at <strong>Bletchley Park</strong>, Britain's Government Code and Cypher School. There <strong>Alan Turing</strong> redesigned the Polish idea into something far more powerful: the British <strong>Bombe</strong>, a machine that exploited <em>cribs</em> — guessed plaintext fragments such as weather reports beginning <span style="font-family:var(--mono)">WETTERVORHERSAGE</span> — to reject millions of wrong rotor settings by electrical contradiction. <strong>Gordon Welchman's "diagonal board"</strong> made it vastly more efficient by wiring in the plugboard's symmetry. The first Bombe ran in 1940; some two hundred followed, tended around the clock, largely by the women of the Wrens.</p>
-    <p>The hardest theatre was the sea. Turing's <strong>Hut 8</strong> attacked the naval Enigma that coordinated the U-boat wolfpacks, and when the Kriegsmarine introduced the four-rotor <strong>M4</strong> in February 1942, Bletchley went dark on the Atlantic for ten agonizing months — a blackout ended partly by sailors <strong>seizing codebooks from the sinking U-559</strong>, two of whom drowned retrieving them. From then on, convoys were routed around wolfpacks the Germans believed invisible.</p>
+    <p>The first crack came not from Britain but from <strong>Poland</strong>, a country that, squeezed between Germany and the USSR, could not afford to be blind. In 1932 the Polish Cipher Bureau handed the Enigma problem to three young mathematicians: <strong>Marian Rejewski, Jerzy Różycki, and Henryk Zygalski</strong>. Armed with permutation theory and setting sheets bought from a German spy by French intelligence, Rejewski achieved something astonishing: he <strong>reconstructed the secret internal wiring of the rotors by pure mathematics</strong>, without ever seeing a military machine. The Poles then read German traffic for most of the 1930s, inventing the <em>Zygalski sheets</em> and an electromechanical search machine they named the <strong>bomba</strong>.</p>
+    <p>By 1938 Germany kept adding rotors and cables, and Poland was running out of money and time. So in <strong>July 1939, weeks before the invasion</strong>, the Poles summoned French and British cryptologists to a secret meeting in the Kabaty woods near Warsaw and gave away everything: the theory, the methods, and working Enigma replicas. It is one of the great acts of intellectual generosity in history, and it saved the Allies years.</p>
+    <p>The inheritance landed at <strong>Bletchley Park</strong>, Britain's Government Code and Cypher School. There <strong>Alan Turing</strong> redesigned the Polish idea into something far more powerful: the British <strong>Bombe</strong>, a machine that exploited <em>cribs</em> (guessed plaintext fragments such as weather reports beginning <span style="font-family:var(--mono)">WETTERVORHERSAGE</span>) to reject millions of wrong rotor settings by electrical contradiction. <strong>Gordon Welchman's "diagonal board"</strong> made it vastly more efficient by wiring in the plugboard's symmetry. The first Bombe ran in 1940; some two hundred followed, tended around the clock, largely by the women of the Wrens.</p>
+    <p>The hardest theatre was the sea. Turing's <strong>Hut 8</strong> attacked the naval Enigma that coordinated the U-boat wolfpacks, and when the Kriegsmarine introduced the four-rotor <strong>M4</strong> in February 1942, Bletchley went dark on the Atlantic for ten agonizing months, a blackout ended partly by sailors <strong>seizing codebooks from the sinking U-559</strong>, two of whom drowned retrieving them. From then on, convoys were routed around wolfpacks the Germans believed invisible.</p>
     <div class="pull">Germany asked: "Can the enemy try 159,000,000,000,000,000,000 keys?" The Allies asked a better question: "How few keys do we actually need to try?"</div>
   </section>
 
   <section id="impact">
     <h2><span class="sub">Die Wirkung · the impact</span>The secret that shortened the war</h2>
-    <p>Decrypted Enigma traffic — codenamed <strong>Ultra</strong> — became the Allies' most precious secret. It guided convoys through the <strong>Battle of the Atlantic</strong>, exposed Rommel's supply ships in the Mediterranean, and in 1944 confirmed that the <strong>D-Day deception</strong> had worked: intercepts showed Hitler still expecting the "real" invasion at Calais while the troops waded ashore at Normandy. Eisenhower called Ultra "decisive." The official historian of British intelligence, Harry Hinsley, estimated it <strong>shortened the war in Europe by around two years</strong> — years that, at the war's rate of killing, translate into <strong>millions of lives</strong>.</p>
-    <p>The strangest part is the silence. Tens of thousands of people worked the secret and kept it for three decades; the story only surfaced in 1974. Which makes the fate of its central figure harder to bear. In 1952 <strong>Alan Turing was prosecuted for being gay</strong>, stripped of his security clearance, and sentenced to chemical castration. He died of cyanide poisoning in 1954, at 41. Britain apologized in 2009 and pardoned him in 2013 — and in 2021 put his face on the £50 note.</p>
-    <p>His legacy outgrew the war entirely. The 1936 paper on "computable numbers" — the <strong>Turing machine</strong> — is the founding document of computer science; the <strong>Turing test</strong> still frames how we argue about machine intelligence. The device you are reading this on is, in a real lineage, a descendant of the ideas that broke Enigma.</p>
+    <p>Decrypted Enigma traffic, codenamed <strong>Ultra</strong>, became the Allies' most precious secret. It guided convoys through the <strong>Battle of the Atlantic</strong>, exposed Rommel's supply ships in the Mediterranean, and in 1944 confirmed that the <strong>D-Day deception</strong> had worked: intercepts showed Hitler still expecting the "real" invasion at Calais while the troops waded ashore at Normandy. Eisenhower called Ultra "decisive." The official historian of British intelligence, Harry Hinsley, estimated it <strong>shortened the war in Europe by around two years</strong>, years that, at the war's rate of killing, translate into <strong>millions of lives</strong>.</p>
+    <p>The strangest part is the silence. Tens of thousands of people worked the secret and kept it for three decades; the story only surfaced in 1974. Which makes the fate of its central figure harder to bear. In 1952 <strong>Alan Turing was prosecuted for being gay</strong>, stripped of his security clearance, and sentenced to chemical castration. He died of cyanide poisoning in 1954, at 41. Britain apologized in 2009 and pardoned him in 2013, and in 2021 put his face on the £50 note.</p>
+    <p>His legacy outgrew the war entirely. The 1936 paper on "computable numbers", the <strong>Turing machine</strong>, is the founding document of computer science; the <strong>Turing test</strong> still frames how we argue about machine intelligence. The device you are reading this on is, in a real lineage, a descendant of the ideas that broke Enigma.</p>
   </section>
 
   <section id="movie">
-    <h2><span class="sub">Der Film · the movie</span>"The Imitation Game" — what it gets right, and wrong</h2>
+    <h2><span class="sub">Der Film · the movie</span>"The Imitation Game": what it gets right, and wrong</h2>
     <p>The 2014 film with <strong>Benedict Cumberbatch</strong> put Turing and Bletchley into popular memory, and much of its spine is true: the cribs, the race against the daily key change, the agonizing choice to <em>not act</em> on some intelligence so the secret would survive, and the cruelty of Turing's persecution. As drama, it earns its place. As history, treat it as a well-made legend:</p>
     <ul>
       <li><strong>Turing didn't work alone against a hostile team.</strong> Bletchley was a collaborative operation of nearly ten thousand people; colleagues respected him, and Commander Denniston was no saboteur.</li>
-      <li><strong>The Bombe wasn't named "Christopher."</strong> The first machine was called <em>Victory</em>; the name honoring Turing's schoolfriend Christopher Morcom is invention. Turing also didn't build it with his own hands — it was engineered by Harold Keen at the British Tabulating Machine Company.</li>
+      <li><strong>The Bombe wasn't named "Christopher."</strong> The first machine was called <em>Victory</em>; the name honoring Turing's schoolfriend Christopher Morcom is invention. Turing also didn't build it with his own hands; it was engineered by Harold Keen at the British Tabulating Machine Company.</li>
       <li><strong>The Polish contribution is skipped almost entirely.</strong> Rejewski, Różycki, and Zygalski broke Enigma first and handed over the keys to the kingdom; the film compresses them into a single line about a smuggled machine.</li>
-      <li><strong>Gordon Welchman is erased.</strong> His diagonal board is quietly credited to Hugh Alexander, and the "eureka" scene — realizing predictable phrases break the cipher — dramatizes something cryptanalysts had known for years.</li>
+      <li><strong>Gordon Welchman is erased.</strong> His diagonal board is quietly credited to Hugh Alexander, and the "eureka" scene, realizing predictable phrases break the cipher, dramatizes something cryptanalysts had known for years.</li>
       <li><strong>The spy subplot is fiction.</strong> John Cairncross was a real Soviet agent at Bletchley, but there's no evidence he ever met Turing, let alone blackmailed him.</li>
     </ul>
   </section>
@@ -405,18 +405,18 @@
         <text x="418" y="175" fill="#7fa8d9" font-size="9">← the return journey, back through everything</text>
       </g>
     </svg>
-    <p>The <strong>plugboard</strong> swaps the letter if a cable is present. Each <strong>rotor</strong> applies its own scrambled wiring, offset by its current rotation and ring setting. The <strong>reflector</strong> (Umkehrwalze) bounces the current back through all three rotors <em>along a different path</em>, through the plugboard again, and lights a lamp. Right rotor steps every key; at its notch it kicks the middle rotor; the middle rotor's own notch kicks the left one — with a mechanical quirk, the famous <strong>double-step</strong>, where the middle rotor advances twice in a row. Watch the <em>Stromweg</em> panel above: that letter chain is exactly this journey.</p>
+    <p>The <strong>plugboard</strong> swaps the letter if a cable is present. Each <strong>rotor</strong> applies its own scrambled wiring, offset by its current rotation and ring setting. The <strong>reflector</strong> (Umkehrwalze) bounces the current back through all three rotors <em>along a different path</em>, through the plugboard again, and lights a lamp. Right rotor steps every key; at its notch it kicks the middle rotor; the middle rotor's own notch kicks the left one, with a mechanical quirk, the famous <strong>double-step</strong>, where the middle rotor advances twice in a row. Watch the <em>Stromweg</em> panel above: that letter chain is exactly this journey.</p>
 
-    <p><strong>The fatal elegance: a letter can never encrypt to itself.</strong> The reflector pairs the 26 wires into 13 two-way streets, so the current always comes back on a <em>different</em> wire than it went out on. Press A, and you may get anything — except A. It sounds harmless. It was catastrophic. If you guess that a ciphertext contains the phrase <span style="font-family:var(--mono)">WETTERBERICHT</span>, every alignment where any letter would map to itself is <em>provably wrong</em>. Cribs plus this rule let the Bombe cascade contradictions and discard almost the entire keyspace without testing it.</p>
+    <p><strong>The fatal elegance: a letter can never encrypt to itself.</strong> The reflector pairs the 26 wires into 13 two-way streets, so the current always comes back on a <em>different</em> wire than it went out on. Press A, and you may get anything, except A. It sounds harmless. It was catastrophic. If you guess that a ciphertext contains the phrase <span style="font-family:var(--mono)">WETTERBERICHT</span>, every alignment where any letter would map to itself is <em>provably wrong</em>. Cribs plus this rule let the Bombe cascade contradictions and discard almost the entire keyspace without testing it.</p>
 
-    <p><strong>The same elegance made it symmetric.</strong> Because every path is reversible, encryption and decryption are the <em>same operation</em>: set your machine to the same daily key, type the ciphertext, and the plaintext lights up. Wonderful for field operators — and it means the plugboard, reflector, and whole machine are one big self-inverse permutation, structure a mathematician like Rejewski could sink theorems into.</p>
+    <p><strong>The same elegance made it symmetric.</strong> Because every path is reversible, encryption and decryption are the <em>same operation</em>: set your machine to the same daily key, type the ciphertext, and the plaintext lights up. Wonderful for field operators, and it means the plugboard, reflector, and whole machine are one big self-inverse permutation, structure a mathematician like Rejewski could sink theorems into.</p>
 
     <div class="kfig">
       <div class="big">158,962,555,217,826,360,000</div>
-      <div class="cap">≈ 1.59 × 10²⁰ possible keys for the Wehrmacht Enigma: 60 rotor orders (3 from 5) × 17,576 rotor start positions × 150,738,274,937,250 ways to plug ten cables. The plugboard contributes almost all of it — and Welchman's diagonal board neutralized the plugboard almost entirely.</div>
+      <div class="cap">≈ 1.59 × 10²⁰ possible keys for the Wehrmacht Enigma: 60 rotor orders (3 from 5) × 17,576 rotor start positions × 150,738,274,937,250 ways to plug ten cables. The plugboard contributes almost all of it, and Welchman's diagonal board neutralized the plugboard almost entirely.</div>
     </div>
 
-    <p>And the machine was only half the weakness. Operators chose girlfriend-initials as message keys, re-sent identical messages under old and new keys, and one bored station transmitted nothing but <span style="font-family:var(--mono)">L</span>s — which, since a letter never maps to itself, told Bletchley instantly what the message <em>wasn't</em>. Enigma's story is the permanent security lesson: <strong>a strong algorithm, used by humans, is only as strong as its habits.</strong></p>
+    <p>And the machine was only half the weakness. Operators chose girlfriend-initials as message keys, re-sent identical messages under old and new keys, and one bored station transmitted nothing but <span style="font-family:var(--mono)">L</span>s, which, since a letter never maps to itself, told Bletchley instantly what the message <em>wasn't</em>. Enigma's story is the permanent security lesson: <strong>a strong algorithm, used by humans, is only as strong as its habits.</strong></p>
 
     <div class="tbl-scroll">
     <table class="mini-table">
@@ -426,11 +426,11 @@
       <tr><td>III</td><td style="font-family:var(--mono)">BDFHJLCPRTXVZNYEIWGAKMUSQO</td><td style="font-family:var(--mono)">V</td></tr>
       <tr><td>IV</td><td style="font-family:var(--mono)">ESOVPZJAYQUIRHXLNFTGKDCMWB</td><td style="font-family:var(--mono)">J</td></tr>
       <tr><td>V</td><td style="font-family:var(--mono)">VZBRGITYUPSDNHLXAWMJQOFECK</td><td style="font-family:var(--mono)">Z</td></tr>
-      <tr><td>UKW-B</td><td style="font-family:var(--mono)">YRUHQSLDPXNGOKMIEBFZCWVJAT</td><td>—</td></tr>
-      <tr><td>UKW-C</td><td style="font-family:var(--mono)">FVPJIAOYEDRZXWGCTKUQSBNMHL</td><td>—</td></tr>
+      <tr><td>UKW-B</td><td style="font-family:var(--mono)">YRUHQSLDPXNGOKMIEBFZCWVJAT</td><td>-</td></tr>
+      <tr><td>UKW-C</td><td style="font-family:var(--mono)">FVPJIAOYEDRZXWGCTKUQSBNMHL</td><td>-</td></tr>
     </table>
     </div>
-    <p style="font-size:.85rem;color:var(--ink-dim)">These are the authentic historical wirings — the same tables running in the simulator above.</p>
+    <p style="font-size:.85rem;color:var(--ink-dim)">These are the authentic historical wirings, the same tables running in the simulator above.</p>
   </section>
 
 </div>
@@ -591,7 +591,7 @@ function renderRotorDeck() {
     <select id="reflSel" aria-label="reflector">
       ${Object.keys(REFLECTOR_SPECS).map(n => `<option value="${n}" ${n===state.reflector?'selected':''}>UKW-${n}</option>`).join('')}
     </select>
-    <div class="hint">The reflector bounces the current back — and guarantees no letter ever encrypts to itself.</div>`;
+    <div class="hint">The reflector bounces the current back, and guarantees no letter ever encrypts to itself.</div>`;
   deck.appendChild(rc);
 
   deck.querySelectorAll('select[data-rsel]').forEach(sel => sel.addEventListener('change', e => {
@@ -661,7 +661,7 @@ function renderPlugPairs() {
   const n = state.plugPairs.length;
   $('plugNote').textContent = n === 0
     ? 'No cables connected. A real operator plugged in ten pairs.'
-    : `${n} cable${n>1?'s':''}: ` + state.plugPairs.map(([a,b]) => String.fromCharCode(a+A)+'–'+String.fromCharCode(b+A)).join('  ');
+    : `${n} cable${n>1?'s':''}: ` + state.plugPairs.map(([a,b]) => String.fromCharCode(a+A)+'-'+String.fromCharCode(b+A)).join('  ');
 }
 function jackClick(c) {
   const idx = state.plugPairs.findIndex(([a,b]) => a === c || b === c);
@@ -684,7 +684,7 @@ function jackClick(c) {
 function group5(s) { return s.replace(/(.{5})/g, '$1 ').trim(); }
 function renderTapes() {
   $('tapeIn').innerHTML  = state.inText  ? group5(state.inText)  : '<span class="ph">waiting for input…</span>';
-  $('tapeOut').innerHTML = state.outText ? group5(state.outText) : '<span class="ph">—</span>';
+  $('tapeOut').innerHTML = state.outText ? group5(state.outText) : '<span class="ph">-</span>';
 }
 let lampTimer = null;
 function lightLamp(c) {
@@ -820,7 +820,7 @@ function runSelfTests() {
   banner.id = 'testBanner';
   banner.innerHTML =
     `<strong>TESTS: ${allPass ? 'PASS' : 'FAIL'}</strong><ul>` +
-    results.map(r => `<li>${r.ok ? '✓' : '✗'} ${r.name} — ${r.detail}</li>`).join('') +
+    results.map(r => `<li>${r.ok ? '✓' : '✗'} ${r.name}: ${r.detail}</li>`).join('') +
     '</ul>';
   $('testHost').appendChild(banner);
 }

@@ -197,7 +197,7 @@
 <div class="wrap">
   <header>
     <h1><span class="k">Password</span> Generator</h1>
-    <p>Cryptographically secure — generated locally, never leaves this page.</p>
+    <p>Cryptographically secure, generated locally, never leaves this page.</p>
   </header>
 
   <div class="card">
@@ -211,7 +211,7 @@
 
     <div class="meter">
       <div class="meter-top">
-        <span id="s-label">—</span>
+        <span id="s-label">-</span>
         <span id="s-bits">0 bits of entropy</span>
       </div>
       <div class="bar"><div id="s-fill"></div></div>
@@ -236,11 +236,11 @@
     <div class="row"><span class="lbl">Character sets</span></div>
     <div class="toggles">
       <label class="tg"><input type="checkbox" id="ck-lower" checked><span class="sw"></span>
-        <span><span class="t">Lowercase</span><span class="h">a–z</span></span></label>
+        <span><span class="t">Lowercase</span><span class="h">a-z</span></span></label>
       <label class="tg"><input type="checkbox" id="ck-upper" checked><span class="sw"></span>
-        <span><span class="t">Uppercase</span><span class="h">A–Z</span></span></label>
+        <span><span class="t">Uppercase</span><span class="h">A-Z</span></span></label>
       <label class="tg"><input type="checkbox" id="ck-digits" checked><span class="sw"></span>
-        <span><span class="t">Digits</span><span class="h">0–9</span></span></label>
+        <span><span class="t">Digits</span><span class="h">0-9</span></span></label>
       <label class="tg"><input type="checkbox" id="ck-symbols" checked><span class="sw"></span>
         <span><span class="t">Symbols</span><span class="h">!@#$%…</span></span></label>
       <label class="tg wide"><input type="checkbox" id="ck-noamb"><span class="sw"></span>
@@ -255,7 +255,7 @@
     <ul id="batch"></ul>
   </div>
 
-  <footer>Uses <code>crypto.getRandomValues</code> with rejection sampling — no modulo bias, no <code>Math.random</code>.</footer>
+  <footer>Uses <code>crypto.getRandomValues</code> with rejection sampling: no modulo bias, no <code>Math.random</code>.</footer>
 </div>
 
 <script>
@@ -364,9 +364,9 @@
     const pw = generate(opts);
     if (pw === null){
       errEl.style.display = "block";
-      pwEl.textContent = "—";
+      pwEl.textContent = "-";
       current = "";
-      sLabel.textContent = "—"; sLabel.style.color = "var(--dim)";
+      sLabel.textContent = "-"; sLabel.style.color = "var(--dim)";
       sBits.textContent = "0 bits of entropy";
       sFill.style.width = "0";
       return;
@@ -542,11 +542,11 @@
     for (const [name, ok, msg] of results){
       const line = document.createElement("span");
       line.className = "line";
-      line.textContent = (ok ? "PASS  " : "FAIL  ") + name + (msg ? " — " + msg : "");
+      line.textContent = (ok ? "PASS  " : "FAIL  ") + name + (msg ? ": " + msg : "");
       banner.appendChild(line);
     }
     banner.setAttribute("data-test-status", allPass ? "PASS" : "FAIL");
-    document.title = (allPass ? "PASS" : "FAIL") + " — Password Generator";
+    document.title = (allPass ? "PASS" : "FAIL") + " · Password Generator";
   }
 })();
 </script>
