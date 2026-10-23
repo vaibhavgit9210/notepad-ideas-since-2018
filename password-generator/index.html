@@ -3,18 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#11151f">
 <title>Password Generator</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23060a13'/%3E%3Ctext x='32' y='46' font-size='38' text-anchor='middle'%3E%F0%9F%8E%B2%3C/text%3E%3C/svg%3E">
 <style>
   :root{
     --bg0:#0b0e14; --bg1:#11151f;
     --card:#161b28; --card2:#1c2333;
-    --line:rgba(255,255,255,.08);
     --txt:#e8ecf4; --dim:#8b94a7; --faint:#5b6273;
     --acc:#6ea8ff; --acc2:#9b7bff;
     --ok:#3ddc97; --warn:#ffb454; --bad:#ff6b81;
     --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+    /* glass, the macOS 26+ material, tinted with --card */
+    --blur:blur(24px) saturate(170%);
+    --rim:inset 0 .5px 0 rgba(255,255,255,.2), inset 0 0 0 .5px rgba(255,255,255,.07);
+    --hair:inset 0 0 0 .5px rgba(255,255,255,.08);
+    --ring:inset 0 0 0 1px var(--acc), 0 0 0 4px rgba(110,168,255,.2);
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html{color-scheme:dark}
@@ -25,8 +31,10 @@
       radial-gradient(800px 500px at 95% 0%, rgba(155,123,255,.12), transparent 55%),
       linear-gradient(180deg,var(--bg1),var(--bg0) 60%);
     display:flex; flex-direction:column; align-items:center;
-    padding:clamp(16px,4vw,48px) 16px 64px;
+    padding:max(clamp(16px,4vw,48px), env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(64px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    -webkit-font-smoothing:antialiased;
   }
+  :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
   .wrap{width:100%;max-width:640px}
   header{margin-bottom:22px;text-align:left}
   h1{font-size:clamp(24px,5vw,32px);font-weight:700;letter-spacing:-.02em}
@@ -34,16 +42,17 @@
   header p{color:var(--dim);font-size:14px;margin-top:6px}
 
   .card{
-    background:linear-gradient(180deg,var(--card2),var(--card));
-    border:1px solid var(--line); border-radius:20px;
+    background:linear-gradient(180deg,rgba(28,35,51,.72),rgba(22,27,40,.62));
+    -webkit-backdrop-filter:var(--blur); backdrop-filter:var(--blur);
+    border-radius:24px;
     padding:clamp(18px,3.5vw,28px);
-    box-shadow:0 20px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+    box-shadow:var(--rim), 0 20px 50px rgba(0,0,0,.45);
   }
 
   /* ---- output ---- */
   .out{
-    position:relative; background:#0d1119; border:1px solid var(--line);
-    border-radius:14px; padding:20px 18px 16px; margin-bottom:14px;
+    position:relative; background:#0d1119; box-shadow:var(--hair), inset 0 1px 3px rgba(0,0,0,.35);
+    border-radius:16px; padding:20px 18px 16px; margin-bottom:14px;
   }
   #pw{
     font-family:var(--mono); font-size:clamp(18px,3.4vw,26px); line-height:1.45;
@@ -52,20 +61,20 @@
   #pw .d{color:#7ec8ff} #pw .s{color:#ff9e7a} /* digits / symbols tint */
   .outbtns{display:flex;gap:10px;margin-top:14px}
   button{
-    font:inherit; cursor:pointer; border:none; border-radius:11px;
+    font:inherit; cursor:pointer; border:none; border-radius:999px;
     padding:11px 18px; font-weight:600; font-size:14px;
-    transition:transform .08s ease, filter .15s ease, background .15s ease;
+    transition:transform .15s ease-out, filter .15s ease-out, background .15s ease-out;
     touch-action:manipulation;
   }
   button:active{transform:scale(.97)}
   .btn-copy{
     flex:1; color:#0b0e14;
     background:linear-gradient(90deg,var(--acc),var(--acc2));
-    box-shadow:0 6px 18px rgba(110,168,255,.25);
+    box-shadow:inset 0 .5px 0 rgba(255,255,255,.45), 0 6px 18px rgba(110,168,255,.25);
   }
   .btn-copy:hover{filter:brightness(1.08)}
-  .btn-copy.copied{background:var(--ok);box-shadow:0 6px 18px rgba(61,220,151,.3)}
-  .btn-ghost{background:rgba(255,255,255,.07);color:var(--txt);border:1px solid var(--line)}
+  .btn-copy.copied{background:var(--ok);box-shadow:inset 0 .5px 0 rgba(255,255,255,.45), 0 6px 18px rgba(61,220,151,.3)}
+  .btn-ghost{background:rgba(255,255,255,.07);color:var(--txt);box-shadow:inset 0 .5px 0 rgba(255,255,255,.12), var(--hair)}
   .btn-ghost:hover{background:rgba(255,255,255,.12)}
 
   /* ---- strength ---- */
@@ -96,27 +105,33 @@
   }
   input[type=number]{
     width:74px; font:inherit; font-weight:700; font-size:16px; text-align:center;
-    color:var(--txt); background:#0d1119; border:1px solid var(--line);
-    border-radius:10px; padding:9px 4px; appearance:textfield;-moz-appearance:textfield;
+    color:var(--txt); background:#0d1119; border:0; box-shadow:var(--hair);
+    border-radius:12px; padding:9px 4px; appearance:textfield;-moz-appearance:textfield;
+    transition:box-shadow .15s ease-out;
   }
-  input[type=number]:focus{outline:none;border-color:var(--acc)}
+  input[type=number]:focus{outline:none;box-shadow:var(--ring)}
 
-  .presets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:22px}
-  .preset{
-    background:rgba(255,255,255,.05); border:1px solid var(--line); color:var(--dim);
-    padding:10px 4px; font-size:13px; font-weight:600; border-radius:11px;
+  /* presets: a segmented control, recessed track with a raised thumb on the chosen one */
+  .presets{
+    display:flex;gap:2px;padding:3px;margin-bottom:22px;border-radius:999px;
+    background:rgba(0,0,0,.28);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.05);
   }
-  .preset:hover{background:rgba(255,255,255,.09);color:var(--txt)}
+  .preset{
+    flex:1 1 auto; background:transparent; color:var(--dim);
+    padding:9px 8px; font-size:13px; font-weight:600; white-space:nowrap;
+  }
+  .preset:hover{background:rgba(255,255,255,.06);color:var(--txt)}
   .preset.on{
-    background:linear-gradient(90deg,rgba(110,168,255,.18),rgba(155,123,255,.18));
-    border-color:rgba(110,168,255,.55); color:var(--txt);
+    background:linear-gradient(90deg,rgba(110,168,255,.3),rgba(155,123,255,.3));
+    box-shadow:inset 0 .5px 0 rgba(255,255,255,.26), inset 0 0 0 .5px rgba(110,168,255,.5), 0 1px 3px rgba(0,0,0,.3);
+    color:var(--txt);
   }
 
   .toggles{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:6px}
   .tg{
     display:flex;align-items:center;gap:11px; padding:12px 14px;
-    background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:12px;
-    cursor:pointer; user-select:none; transition:background .15s;
+    background:rgba(255,255,255,.04); box-shadow:var(--hair); border-radius:14px;
+    cursor:pointer; user-select:none; transition:background .15s ease-out;
   }
   .tg:hover{background:rgba(255,255,255,.07)}
   .tg input{display:none}
@@ -142,10 +157,10 @@
   #batch.show{display:flex}
   #batch li{
     display:flex;align-items:center;gap:10px;
-    background:#0d1119;border:1px solid var(--line);border-radius:11px;padding:11px 14px;
+    background:#0d1119;box-shadow:var(--hair);border-radius:14px;padding:11px 14px;
   }
   #batch code{font-family:var(--mono);font-size:14px;word-break:break-all;flex:1}
-  #batch button{padding:6px 12px;font-size:12px;border-radius:8px}
+  #batch button{padding:6px 12px;font-size:12px}
 
   footer{margin-top:20px;color:var(--faint);font-size:12.5px;text-align:center;line-height:1.6}
 
@@ -161,10 +176,17 @@
   #testbanner .line{display:block;line-height:1.7}
 
   @media (max-width:520px){
-    .presets{grid-template-columns:repeat(2,1fr)}
+    .preset{padding:9px 6px;font-size:12.5px}
     .toggles{grid-template-columns:1fr}
     .outbtns{flex-direction:column}
     .btn-ghost{width:100%}
+  }
+  /* Reduce Transparency: the card goes solid, no blur */
+  @media (prefers-reduced-transparency:reduce){
+    .card{background:linear-gradient(180deg,var(--card2),var(--card));-webkit-backdrop-filter:none;backdrop-filter:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important}
   }
 </style>
 </head>
